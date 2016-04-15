@@ -9,6 +9,55 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
+            <StackPanel>
+                <Button 
+                 x:Name="btnOnShowKeywords" 
+                 Content="Show keywords" 
+                 HorizontalAlignment="center"
+                 Width="300" Click="btnOnToonKernwoorden_Click"/>
 
+                <Button 
+                 x:Name="btnOnAddKeyword" 
+                 Content="Add keyword" 
+                 HorizontalAlignment="center"
+                 Width="300" Click="btnOnAddKeyword_Click"/>
+
+                <Button 
+                 x:Name="btnOnDelKeyword" 
+                 Content="Delete keyword" 
+                 HorizontalAlignment="center"
+                 Width="300" Click="btnOnDelKeyword_Click"/>
+
+                <TextBlock Text="Database statistics:" Style="{ThemeResource TitleTextBlockStyle}"  Margin="0,12,-0.333,0"/>
+
+                <Grid Grid.Row="1" x:Name="Content2Root" Margin="19,9.5,19,0">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Number of items:" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,17,51.667,6.167" RenderTransformOrigin="0.502,0.47"/>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding AmountOfItems}"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource SubheaderTextBlockStyle}"
+                               Margin="191,4,-3.667,6.583" RenderTransformOrigin="0.498,0.5" Grid.ColumnSpan="4"/>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Number of keywords:" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,16.833,12.667,4.5" RenderTransformOrigin="0.502,0.47"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding AmountOfKeywords}"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource SubheaderTextBlockStyle}"
+                               Margin="191,4,-3.667,6.583" RenderTransformOrigin="0.498,0.5" Grid.ColumnSpan="4"/>
+
+                </Grid>
+                <TextBlock Text="Bron: deredactie.be" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,264.667,0" Height="22" RenderTransformOrigin="0.502,0.47" FontSize="10.667"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Page>
