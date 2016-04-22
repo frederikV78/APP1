@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLitePCL;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -37,6 +38,16 @@ namespace App_project
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             // TODO: Prepare page for display here.
+            using (SQLiteConnection conn = new SQLiteConnection("Keywords"))
+            {
+                string query = "CREATE TABLE IF NOT EXISTS KEYWORDS (KId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Name varchar(30), Created DATETIME, Updated DATETIME)";
+                ISQLiteStatement statement = conn.Prepare(query);
+                statement.Step();
+
+                string query2 = "INSERT INTO Keywords (Name, Created, Updated) VALUES (Keyword-Test,2016 - 04 - 22T07: 46:00.000 + 02:00,2016 - 04 - 22T08: 10:00.000 + 02:00)";
+                ISQLiteStatement statement2 = conn.Prepare(query2);
+                statement2.Step();
+            }
 
             // TODO: If your application contains multiple pages, ensure that you are
             // handling the hardware Back button by registering for the
