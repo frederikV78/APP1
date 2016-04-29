@@ -105,41 +105,8 @@ namespace App_project
 
         private void btnOnToonKernwoorden_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                string query = "SELECT * FROM Keywords;";
-                using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
-                {
-                    using (ISQLiteStatement statement = conn.Prepare(query))
-                    {
-                        int i = 0;
-                        Debug.WriteLine("   *** START db items ***   ");
-                        while (statement.Step() == SQLiteResult.ROW)
-                        {
-                            i++;
-                            //int KId = (int)statement[0];
-                            string keyword = (string)statement[1];
-                            //Debug.WriteLine("KEYWORD: {0}, Id: {1}", keyword, KId);
-                            Debug.WriteLine("KEYWORD {0}: {1}", i, keyword);
-                        }
-                        if (i==0)
-                        {
-                            Debug.WriteLine("   *** NO ITEMS TO SHOW from Keywords table! ***   ");
-                        }
-                        else
-                        {
-                            Debug.WriteLine("AMOUNT OF ITEMS in Keywords:{0}", i);
-                            Debug.WriteLine("   *** EINDE db items ***   ");
-                        }
+            this.Frame.Navigate(typeof(ShowKeywords));
 
-                    };
-                };
-            }
-            catch (SQLiteException ex)
-            {
-                Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
-                throw;
-            }
 
 
         }

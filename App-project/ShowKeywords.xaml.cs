@@ -1,5 +1,7 @@
-﻿using System;
+﻿using SQLitePCL;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -22,6 +24,8 @@ namespace App_project
     /// </summary>
     public sealed partial class ShowKeywords : Page
     {
+        
+
         public ShowKeywords()
         {
             this.InitializeComponent();
@@ -32,8 +36,122 @@ namespace App_project
         /// </summary>
         /// <param name="e">Event data that describes how this page was reached.
         /// This parameter is typically used to configure the page.</param>
+        /// 
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+
+        }
+
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            //Load the list of keywords from the Keywords table
+            try
+            {
+                string query = "SELECT * FROM Keywords ORDER BY Name;";
+                using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
+                {
+                    using (SQLitePCL.ISQLiteStatement statement = conn.Prepare(query))
+                    {
+                        List<KeywordsListItem> KeywordsListItem1 = new List<KeywordsListItem>();
+                        int i = 0;
+                        Debug.WriteLine("   *** START db items ***   ");
+                        while (statement.Step() == SQLiteResult.ROW)
+                        {
+                            i++;
+                            string keyword = (string)statement[1];
+                            KeywordsListItem item = new KeywordsListItem { Item = keyword };
+                            KeywordsListItem1.Add(item);
+                        }
+                        if (i==0)
+                        {
+                            KeywordsListItem item = new KeywordsListItem { Item = "Nothing to show!" };
+                            KeywordsListItem1.Add(item);
+                        }
+                        KeywordsList.ItemsSource = KeywordsListItem1;
+                        if (i == 0)
+                        {
+                            Debug.WriteLine("   *** NO ITEMS TO SHOW from Keywords table! ***   ");
+                        }
+                        else
+                        {
+                            Debug.WriteLine("AMOUNT OF ITEMS in Keywords:{0}", i);
+                            Debug.WriteLine("   *** EINDE db items ***   ");
+                        }
+                    };
+                };
+            }
+            catch (SQLiteException ex)
+            {
+                Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
+                throw;
+            }
+
+
+
+
+
+        }
+
+        private void AppBarButton_Click(object sender, RoutedEventArgs e) //BACK BUTTON
+        {
+            this.Frame.Navigate(typeof(MainPage));
+        }
+
+        private void AppBarButton1_Click(object sender, RoutedEventArgs e) //DELETE BUTTON
+        {
+            string selection = KeywordsList.SelectedItem.ToString();
+            if (selection != "")
+            {
+                try
+                {
+                    string query = "DELETE FROM Keywords WHERE Name=@keyword;";
+                    using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
+                    {
+                        using (ISQLiteStatement statement = conn.Prepare(query))
+                        {
+                            statement.Bind("@keyword", selection);
+                            statement.Step();
+                            statement.Reset();
+                        }
+                        Debug.WriteLine(" ***   Row {0} deleted in Keywords db!", selection);
+
+                    };
+                }
+                catch (SQLiteException ex)
+                {
+                    Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
+                    throw;
+                }
+                try
+                {
+                    string query = "DELETE FROM Items WHERE Word=@keyword;";
+                    using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
+                    {
+                        using (ISQLiteStatement statement = conn.Prepare(query))
+                        {
+                            statement.Bind("@keyword", selection);
+                            statement.Step();
+                            statement.Reset();
+                        }
+                        Debug.WriteLine(" ***   Rows with Word={0} deleted in Items db!", selection);
+                    };
+                }
+                catch (SQLiteException ex)
+                {
+                    Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
+                    throw;
+                }
+
+            }
+
+
+
         }
     }
-}
+
+
+
+
+    }
+

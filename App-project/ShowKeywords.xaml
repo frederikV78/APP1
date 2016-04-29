@@ -7,8 +7,26 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+    <Page.BottomAppBar>
+        <CommandBar>
+            <CommandBar.PrimaryCommands>
+                <AppBarButton Label="Back" Icon="Back" Click="AppBarButton_Click"/>
+                <AppBarButton Label="Wis item" Icon="Delete" Click="AppBarButton1_Click"/>
+            </CommandBar.PrimaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
+    
+    
     <Grid>
-
+        <ListView x:Name="KeywordsList" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="10,0,0,0" SelectionMode="Single">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="{Binding Path=Item, Mode=TwoWay}" FontSize="32" VerticalAlignment="Bottom" HorizontalAlignment="center" Padding="10" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        
     </Grid>
 </Page>
