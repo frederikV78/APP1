@@ -8,6 +8,8 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+
+    
     <Grid>
         <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
             <StackPanel>
@@ -23,7 +25,12 @@
                  HorizontalAlignment="center"
                  Width="300" Click="btnOnAddKeyword_Click"/>
 
-                <Button 
+                <TextBox Width="300" HorizontalAlignment="center" x:Name="keywordTextBox"
+                         PlaceholderText="Enter a keyword" Text="{Binding Path=Keyword, Mode=OneWay}">
+                    
+                </TextBox> 
+
+                 <Button 
                  x:Name="btnOnDelKeyword" 
                  Content="Delete keyword" 
                  HorizontalAlignment="center"
@@ -44,13 +51,13 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="Number of items:" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,17,51.667,6.167" RenderTransformOrigin="0.502,0.47"/>
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding AmountOfItems}"
+                    <TextBlock Grid.Row="0" Grid.Column="0" x:Name="LabelAmountOfItems" Text="{Binding AmountOfItems}"
                                TextWrapping="Wrap"
                                Style="{StaticResource SubheaderTextBlockStyle}"
                                Margin="191,4,-3.667,6.583" RenderTransformOrigin="0.498,0.5" Grid.ColumnSpan="4"/>
 
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="Number of keywords:" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,16.833,12.667,4.5" RenderTransformOrigin="0.502,0.47"/>
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding AmountOfKeywords}"
+                    <TextBlock Grid.Row="1" Grid.Column="0" x:Name="LabelAmountOfKeywords" Text="{Binding AmountOfKeywords}"
                                TextWrapping="Wrap"
                                Style="{StaticResource SubheaderTextBlockStyle}"
                                Margin="191,4,-3.667,6.583" RenderTransformOrigin="0.498,0.5" Grid.ColumnSpan="4"/>

@@ -43,7 +43,7 @@ namespace App_project
 
             // TODO: Prepare page for display here.
 
-            //string query5 = "DROP TABLE IF EXISTS Keywords;";
+            //string query5 = "DROP TABLE IF EXISTS Items;";
             //try
             //{
             //    using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
@@ -52,7 +52,7 @@ namespace App_project
             //        {
             //            statement.Step();
             //            statement.Reset();
-            //            Debug.WriteLine(" ***   Keywords table deleted");
+            //            Debug.WriteLine(" ***   Items table deleted");
             //        }
             //    };
             //}
@@ -81,7 +81,7 @@ namespace App_project
                 }
             };
             //CREATE Items TABLE IF NOT EXISTS
-            string query1 = "CREATE TABLE IF NOT EXISTS Items (ItemId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,KId INTEGER UNIQUE, Item varchar(500));";
+            string query1 = "CREATE TABLE IF NOT EXISTS Items (ItemId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,KId INTEGER UNIQUE, Word varchar(30), Item varchar(500));";
             using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
             {
                 using (ISQLiteStatement statement = conn.Prepare(query1))
@@ -91,6 +91,170 @@ namespace App_project
                     Debug.WriteLine(" ***   Items table created!");
                 }
             };
+
+
+            CheckTablesItems();
+
+
+            // TODO: If your application contains multiple pages, ensure that you are
+            // handling the hardware Back button by registering for the
+            // Windows.Phone.UI.Input.HardwareButtons.BackPressed event.
+            // If you are using the NavigationHelper provided by some templates,
+            // this event is handled for you.
+        }
+
+        private void btnOnToonKernwoorden_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string query = "SELECT * FROM Keywords;";
+                using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
+                {
+                    using (ISQLiteStatement statement = conn.Prepare(query))
+                    {
+                        int i = 0;
+                        Debug.WriteLine("   *** START db items ***   ");
+                        while (statement.Step() == SQLiteResult.ROW)
+                        {
+                            i++;
+                            //int KId = (int)statement[0];
+                            string keyword = (string)statement[1];
+                            //Debug.WriteLine("KEYWORD: {0}, Id: {1}", keyword, KId);
+                            Debug.WriteLine("KEYWORD {0}: {1}", i, keyword);
+                        }
+                        if (i==0)
+                        {
+                            Debug.WriteLine("   *** NO ITEMS TO SHOW from Keywords table! ***   ");
+                        }
+                        else
+                        {
+                            Debug.WriteLine("AMOUNT OF ITEMS in Keywords:{0}", i);
+                            Debug.WriteLine("   *** EINDE db items ***   ");
+                        }
+
+                    };
+                };
+            }
+            catch (SQLiteException ex)
+            {
+                Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
+                throw;
+            }
+
+
+        }
+
+        private void btnOnAddKeyword_Click(object sender, RoutedEventArgs e)
+        {
+            string keyword = keywordTextBox.Text;
+            if (keyword != "")
+            {
+                try
+                {
+                    string query = "INSERT INTO Keywords (Name) VALUES (@keyword);";
+                    using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
+                    {
+                        using (var statement = conn.Prepare(query))
+                        {
+                            statement.Bind("@keyword", keyword);
+                            statement.Step();
+                            statement.Reset();
+                        }
+                        Debug.WriteLine(" ***   {0} added in Keywords db!", keyword);
+                    };
+                }
+                catch (SQLiteException ex)
+                {
+                    Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
+                    //throw;
+                }
+
+                try
+                {
+                    string query = "INSERT INTO Items (Word) VALUES (@keyword);";
+                    using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
+                    {
+                        using (var statement = conn.Prepare(query))
+                        {
+                            statement.Bind("@keyword", keyword);
+                            statement.Step();
+                            statement.Reset();
+                        }
+                        Debug.WriteLine(" ***   {0} added in Items db!", keyword);
+                        keywordTextBox.Text = "";
+                        keywordTextBox.PlaceholderText = "Enter a keyword";
+                    };
+                }
+                catch (SQLiteException ex)
+                {
+                    Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
+                    //throw;
+                }
+            }
+            keyword = "";
+            CheckTablesItems();
+
+
+        }
+
+        private void btnOnDelKeyword_Click(object sender, RoutedEventArgs e)
+        {
+            string keyword = keywordTextBox.Text;
+
+            if (keyword != "")
+            {
+                try
+                {
+                    string query = "DELETE FROM Keywords WHERE Name=@keyword;";
+                    using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
+                    {
+                        using (ISQLiteStatement statement = conn.Prepare(query))
+                        {
+                            statement.Bind("@keyword", keyword);
+                            statement.Step();
+                            statement.Reset();
+                        }
+                        Debug.WriteLine(" ***   Row {0} deleted in Keywords db!", keyword);
+
+                    };
+                }
+                catch (SQLiteException ex)
+                {
+                    Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
+                    throw;
+                }
+
+                try
+                {
+                    string query = "DELETE FROM Items WHERE Word=@keyword;";
+                    using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
+                    {
+                        using (ISQLiteStatement statement = conn.Prepare(query))
+                        {
+                            statement.Bind("@keyword", keyword);
+                            statement.Step();
+                            statement.Reset();
+                        }
+                        Debug.WriteLine(" ***   Rows with Word={0} deleted in Items db!", keyword);
+                        keywordTextBox.Text = "";
+                        keywordTextBox.PlaceholderText = "Enter a keyword";
+                    };
+                }
+                catch (SQLiteException ex)
+                {
+                    Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
+                    throw;
+                }
+
+            }
+
+            CheckTablesItems();
+            keyword = "";
+        }
+
+
+        private void CheckTablesItems()
+        {
             //CHECKING HOW MANY KEYWORDS IN THE Keywords TABLE
             try
             {
@@ -104,7 +268,8 @@ namespace App_project
                         {
                             i++;
                         }
-                        Debug.WriteLine("AMOUNT OF ITEMS in Keywords:{0}", i);
+                        LabelAmountOfKeywords.Text = i.ToString();
+                        //Debug.WriteLine("AMOUNT OF ITEMS in Keywords:{0}", i);
                     };
                 };
             }
@@ -126,7 +291,8 @@ namespace App_project
                         {
                             i++;
                         }
-                        Debug.WriteLine("AMOUNT OF ITEMS in Items:{0}", i);
+                        LabelAmountOfItems.Text = i.ToString();
+                        //Debug.WriteLine("AMOUNT OF ITEMS in Items:{0}", i);
                     };
                 };
             }
@@ -135,97 +301,11 @@ namespace App_project
                 Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
                 throw;
             }
-
-
-
-
-            // TODO: If your application contains multiple pages, ensure that you are
-            // handling the hardware Back button by registering for the
-            // Windows.Phone.UI.Input.HardwareButtons.BackPressed event.
-            // If you are using the NavigationHelper provided by some templates,
-            // this event is handled for you.
         }
 
-        private void btnOnToonKernwoorden_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                string query = "SELECT * FROM Keywords WHERE Name='Keyword-Test';";
-                using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
-                {
-                    using (ISQLiteStatement statement = conn.Prepare(query))
-                    {
-                        int i = 0;
-                        Debug.WriteLine("   *** START db items ***   ");
-                        while (statement.Step() == SQLiteResult.ROW)
-                        {
-                            i++;
-                            //int KId = (int)statement[0];
-                            string keyword = (string)statement[1];
-                            //Debug.WriteLine("KEYWORD: {0}, Id: {1}", keyword, KId);
-                            Debug.WriteLine("KEYWORD: {0}", keyword);
-                        }
-                        Debug.WriteLine("AMOUNT OF ITEMS in Keywords:{0}", i);
-                        Debug.WriteLine("   *** EINDE db items ***   ");
-                    };
-                };
-            }
-            catch (SQLiteException ex)
-            {
-                Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
-                throw;
-            }
-
-
-        }
-
-        private void btnOnAddKeyword_Click(object sender, RoutedEventArgs e)
-        {
-            string keyword = "KeywordTest";
-            try
-            {
-                string query = "INSERT INTO Keywords (Name) VALUES (@keyword);";
-                using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
-                {
-                    using (var statement = conn.Prepare(query))
-                    {
-                        statement.Bind("@keyword", keyword);
-                        statement.Step();
-                        statement.Reset();
-                    }
-                    Debug.WriteLine(" ***   {0} added in Keywords db!",keyword);
-                };
-            }
-            catch (SQLiteException ex)
-            {
-                Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
-                //throw;
-            }
 
 
 
-        }
 
-        private void btnOnDelKeyword_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                string query = "DELETE FROM Keywords WHERE Name='KeywordTest';";
-                using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
-                {
-                    using (ISQLiteStatement statement = conn.Prepare(query))
-                    {
-                        statement.Step();
-                        statement.Reset();
-                    }
-                    Debug.WriteLine(" ***   Row KeywordTest deleted in Keywords db!");
-                };
-            }
-            catch (SQLiteException ex)
-            {
-                Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
-                throw;
-            }
-        }
     }
 }
