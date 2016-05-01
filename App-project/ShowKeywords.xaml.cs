@@ -25,7 +25,6 @@ namespace App_project
     public sealed partial class ShowKeywords : Page
     {
         
-
         public ShowKeywords()
         {
             this.InitializeComponent();
@@ -45,6 +44,8 @@ namespace App_project
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            
+
             //Load the list of keywords from the Keywords table
             try
             {
@@ -53,31 +54,25 @@ namespace App_project
                 {
                     using (SQLitePCL.ISQLiteStatement statement = conn.Prepare(query))
                     {
-                        List<KeywordsListItem> KeywordsListItem1 = new List<KeywordsListItem>();
+                        List<string> LijstKeywords = new List<string>();
+                        
                         int i = 0;
                         Debug.WriteLine("   *** START db items ***   ");
                         while (statement.Step() == SQLiteResult.ROW)
                         {
                             i++;
                             string keyword = (string)statement[1];
-                            KeywordsListItem item = new KeywordsListItem { Item = keyword };
-                            KeywordsListItem1.Add(item);
+                            LijstKeywords.Add(keyword);
                         }
                         if (i==0)
                         {
-                            KeywordsListItem item = new KeywordsListItem { Item = "Nothing to show!" };
-                            KeywordsListItem1.Add(item);
-                        }
-                        KeywordsList.ItemsSource = KeywordsListItem1;
-                        if (i == 0)
-                        {
-                            Debug.WriteLine("   *** NO ITEMS TO SHOW from Keywords table! ***   ");
+                            LijstKeywords.Add("Nothing to show!");
                         }
                         else
                         {
                             Debug.WriteLine("AMOUNT OF ITEMS in Keywords:{0}", i);
-                            Debug.WriteLine("   *** EINDE db items ***   ");
                         }
+                        listbox1.ItemsSource = LijstKeywords;
                     };
                 };
             }
@@ -98,56 +93,23 @@ namespace App_project
             this.Frame.Navigate(typeof(MainPage));
         }
 
-        private void AppBarButton1_Click(object sender, RoutedEventArgs e) //DELETE BUTTON
+        private void AppBarButton1_Click(object sender, RoutedEventArgs e) //DETAILS BUTTON
         {
-            string selection = KeywordsList.SelectedItem.ToString();
-            if (selection != "")
-            {
-                try
-                {
-                    string query = "DELETE FROM Keywords WHERE Name=@keyword;";
-                    using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
-                    {
-                        using (ISQLiteStatement statement = conn.Prepare(query))
-                        {
-                            statement.Bind("@keyword", selection);
-                            statement.Step();
-                            statement.Reset();
-                        }
-                        Debug.WriteLine(" ***   Row {0} deleted in Keywords db!", selection);
-
-                    };
-                }
-                catch (SQLiteException ex)
-                {
-                    Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
-                    throw;
-                }
-                try
-                {
-                    string query = "DELETE FROM Items WHERE Word=@keyword;";
-                    using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
-                    {
-                        using (ISQLiteStatement statement = conn.Prepare(query))
-                        {
-                            statement.Bind("@keyword", selection);
-                            statement.Step();
-                            statement.Reset();
-                        }
-                        Debug.WriteLine(" ***   Rows with Word={0} deleted in Items db!", selection);
-                    };
-                }
-                catch (SQLiteException ex)
-                {
-                    Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
-                    throw;
-                }
-
-            }
+            
+            
 
 
 
         }
+
+
+
+
+
+
+
+
+
     }
 
 

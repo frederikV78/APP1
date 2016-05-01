@@ -212,7 +212,10 @@ namespace App_project
                     Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
                     throw;
                 }
-
+            }
+            else
+            {
+                this.Frame.Navigate(typeof(DeleteKeyword));
             }
 
             CheckTablesItems();

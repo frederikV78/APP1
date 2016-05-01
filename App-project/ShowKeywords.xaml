@@ -7,26 +7,57 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    
+    
+    
     <Page.BottomAppBar>
         <CommandBar>
             <CommandBar.PrimaryCommands>
                 <AppBarButton Label="Back" Icon="Back" Click="AppBarButton_Click"/>
-                <AppBarButton Label="Wis item" Icon="Delete" Click="AppBarButton1_Click"/>
+                <AppBarButton Label="Details" Icon="ShowResults" Click="AppBarButton1_Click"/>
             </CommandBar.PrimaryCommands>
         </CommandBar>
     </Page.BottomAppBar>
     
     
     <Grid>
-        <ListView x:Name="KeywordsList" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="10,0,0,0" SelectionMode="Single">
+        <ListBox x:Name="listbox1" Margin="25,25,25,25" Background="Black">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Left" >
+                        
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate> 
+                <DataTemplate>
+                    <Border BorderThickness="0,0,0,0" BorderBrush="#c0c0c0">
+                        <Grid Width="Auto" HorizontalAlignment="Stretch">
+                            <TextBlock x:Name="KeywordLabel" Text="{Binding}" Foreground="White" FontSize="32" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="50,10,0,0" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+
+        <!--<ListView x:Name="KeywordsList" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="10,0,0,0" SelectionMode="Single">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
-                        <TextBlock Text="{Binding Path=Item, Mode=TwoWay}" FontSize="32" VerticalAlignment="Bottom" HorizontalAlignment="center" Padding="10" />
+                        <Grid>
+                            <CheckBox x:Name="keywordCheckBox" Checked="keywordCheckBox_Checked" Unchecked="keywordCheckBox_Unchecked" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" />
+                            <TextBlock x:Name="KeywordLabel" Text="{Binding Path=Item}" FontSize="32" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="50,10,0,0" />
+                        </Grid>
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
-        </ListView>
+        </ListView>-->
         
     </Grid>
+
+   
+
 </Page>
+
+
