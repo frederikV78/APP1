@@ -129,6 +129,27 @@ namespace App_project
                     throw;
                 }
 
+                try
+                {
+                    string query = "DELETE FROM Items WHERE keyword=@keyword;";
+                    using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
+                    {
+                        using (ISQLiteStatement statement = conn.Prepare(query))
+                        {
+                            statement.Bind("@keyword", selection);
+                            statement.Step();
+                            statement.Reset();
+                        }
+                        Debug.WriteLine(" ***   Rows with Word={0} deleted in Items db!", selection);
+
+                    };
+                }
+                catch (SQLiteException ex)
+                {
+                    Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
+                    throw;
+                }
+
                 this.Frame.Navigate(typeof(DeleteKeyword));
             }
         }

@@ -1,5 +1,6 @@
 ﻿using SQLitePCL;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -40,7 +41,7 @@ namespace App_project
         /// This parameter is typically used to configure the page.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            //DeleteTable("Items");
+            //DeleteTable("items");
 
             //TODO: Prepare page for display here.
 
@@ -83,6 +84,7 @@ namespace App_project
             if (keyword != "")
             {
                 DeleteKeyword(keyword);
+                DeleteItems(keyword);
             }
             else
             {
@@ -156,7 +158,27 @@ namespace App_project
 
                 //SyndicationFeed feed = new SyndicationFeed();
                 //////feed.Load(reader.ToString());
+               // List<RSSFeed> 
+                List<string> keywords = GetKeywordsList();
+                foreach (var itemElement in rssElements.Element("channel").Elements("item"))
+                {
+                    var titleElement = itemElement.Element("title");
+                    string title = itemElement.Element("title").Value.ToLower();
+                    
+                    foreach (string keyword in keywords)
+                    {
+                        keyword.ToLower();
+                        if (title.Contains(keyword))
+                        {
+                            SaveItemElement(itemElement,keyword); //nog schrijven!!!
+                            Debug.WriteLine("*** *** ***   HIT   = {0}: {1}", keyword, title);
 
+                        }
+                    }
+                    
+
+
+                }
                 //////newPubDate = feed.LastUpdatedTime.ToUniversalTime().ToString();
 
                 //////reader.Dispose();
@@ -249,17 +271,17 @@ namespace App_project
             }
         }
 
-        private async void tekst()
-        {
-            RSSFeed rssFeed = (RSSFeed)App.Current.Resources["rssFeed"];
-            if (rssFeed != null)
-            {
-                await rssFeed.GetFeedAsync("http://deredactie.be/cm/vrtnieuws?mode=atom");
-                //this.defaultViewModel["Feed"] = rssFeed;
-            }
+        //private async void tekst()
+        //{
+        //    RSSFeed rssFeed = (RSSFeed)App.Current.Resources["rssFeed"];
+        //    if (rssFeed != null)
+        //    {
+        //        await rssFeed.GetFeedAsync("http://deredactie.be/cm/vrtnieuws?mode=atom");
+        //        //this.defaultViewModel["Feed"] = rssFeed;
+        //    }
 
-            await RegisterTask();
-        }
+        //    await RegisterTask();
+        //}
 
 
         private void CreateTablesIfNotExists()
@@ -277,7 +299,7 @@ namespace App_project
                 }
             };
             //CREATE Items TABLE IF NOT EXISTS
-            string query1 = "CREATE TABLE IF NOT EXISTS Items (ItemId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,KId INTEGER UNIQUE, Word varchar(30), Item varchar(500));";
+            string query1 = "CREATE TABLE IF NOT EXISTS Items (ItemId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,KId INTEGER NOT NULL, Keyword varchar(30), Title varchar(30) UNIQUE, Link varchar(100), Description varchar(1024), PubDate varchar(30));";
             using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
             {
                 using (ISQLiteStatement statement = conn.Prepare(query1))
@@ -311,27 +333,6 @@ namespace App_project
                 Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
                 throw;
             }
-            //try
-            //{
-            //    string query = "DELETE FROM Items WHERE Word=@keyword;";
-            //    using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
-            //    {
-            //        using (ISQLiteStatement statement = conn.Prepare(query))
-            //        {
-            //            statement.Bind("@keyword", keyword);
-            //            statement.Step();
-            //            statement.Reset();
-            //        }
-            //        Debug.WriteLine(" ***   Rows with Word={0} deleted in Items db!", keyword);
-            //        keywordTextBox.Text = "";
-            //        keywordTextBox.PlaceholderText = "Enter a keyword";
-            //    };
-            //}
-            //catch (SQLiteException ex)
-            //{
-            //    Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
-            //    throw;
-            //}
         }
 
         private void AddKeyword(string keyword)
@@ -355,41 +356,19 @@ namespace App_project
                 Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
                 //throw;
             }
-
-            //try
-            //{
-            //    string query = "INSERT INTO Items (Word) VALUES (@keyword);";
-            //    using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
-            //    {
-            //        using (var statement = conn.Prepare(query))
-            //        {
-            //            statement.Bind("@keyword", keyword);
-            //            statement.Step();
-            //            statement.Reset();
-            //        }
-            //        Debug.WriteLine(" ***   {0} added in Items db!", keyword);
-            //        keywordTextBox.Text = "";
-            //        keywordTextBox.PlaceholderText = "Enter a keyword";
-            //    };
-            //}
-            //catch (SQLiteException ex)
-            //{
-            //    Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
-            //    //throw;
-            //}
         }
 
         private void DeleteTable(string table)
         {
             //string query5 = "IF EXISTS (SELECT 1 FROM sqlite_master WHERE table_name='KEYWORDS') DROP TABLE KEYWORDS;";
-            string query5 = "DROP TABLE IF EXISTS @table;";
+            string query5 = "DROP TABLE IF EXISTS items;";
             try
             {
                 using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
                 {
                     using (ISQLiteStatement statement = conn.Prepare(query5))
                     {
-                        statement.Bind("@table", table);
+                        //statement.Bind("@table", table);
                         statement.Step();
                         statement.Reset();
                         Debug.WriteLine(" ***   Items table deleted");
@@ -452,6 +431,104 @@ namespace App_project
                 throw;
             }
         }
+
+        private List<string> GetKeywordsList()
+        {
+            try
+            {
+                string query = "SELECT * FROM Keywords ORDER BY Name;";
+                using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
+                {
+                    using (SQLitePCL.ISQLiteStatement statement = conn.Prepare(query))
+                    {
+                        List<string> LijstKeywords = new List<string>();
+
+                        int i = 0;
+                        Debug.WriteLine("   *** START db items ***   ");
+                        while (statement.Step() == SQLiteResult.ROW)
+                        {
+                            i++;
+                            string keyword = (string)statement[1];
+                            LijstKeywords.Add(keyword);
+                        }
+                        if (i == 0)
+                        {
+                            LijstKeywords.Add("Nothing to show!");
+                        }
+                        else
+                        {
+                            Debug.WriteLine("AMOUNT OF ITEMS in Keywords:{0}", i);
+                        }
+                        return LijstKeywords;
+                    };
+                };
+            }
+            catch (SQLiteException ex)
+            {
+                Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
+                throw;
+            }
+
+        }
+
+        private void SaveItemElement(XElement itemElement,string keyword)
+        {
+            //(ItemId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, KId INTEGER NOT NULL, Keyword varchar(30), Title varchar(30) UNIQUE, Link varchar(100), description varchar(1024), PubDate varchar(30))
+
+            try
+            {
+                string query = "INSERT INTO Items (KId,Keyword,Title,Link,Description,PubDate) VALUES (7,@keyword,@title,@link,@description,@pubdate);";
+                using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
+                {
+                    using (var statement = conn.Prepare(query))
+                    {
+                        statement.Bind("@keyword", keyword);
+                        statement.Bind("@title", itemElement.Element("title").Value);
+                        statement.Bind("@link", itemElement.Element("link").Value);
+                        statement.Bind("@description", itemElement.Element("description").Value);
+                        statement.Bind("@pubdate", itemElement.Element("pubDate").Value);
+                        statement.Step();
+                        statement.Reset();
+                    }
+                    Debug.WriteLine(" ***       {0}       *** added in Items db!", itemElement.Element("title").Value);
+
+                };
+            }
+            catch (SQLiteException ex)
+            {
+                Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
+                throw;
+            }
+
+        }
+
+        private void DeleteItems(string keyword)
+        {
+            try
+            {
+                string query = "DELETE FROM Items WHERE keyword=@keyword;";
+                using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
+                {
+                    using (ISQLiteStatement statement = conn.Prepare(query))
+                    {
+                        statement.Bind("@keyword", keyword);
+                        statement.Step();
+                        statement.Reset();
+                    }
+                    Debug.WriteLine(" ***   Rows with Word={0} deleted in Items db!", keyword);
+
+                };
+            }
+            catch (SQLiteException ex)
+            {
+                Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
+                throw;
+            }
+        }
+
+
+
+
 
 
 
