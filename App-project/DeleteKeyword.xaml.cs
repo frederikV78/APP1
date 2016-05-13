@@ -36,7 +36,35 @@ namespace App_project
         /// This parameter is typically used to configure the page.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            //Load the list of keywords from the Keywords table
+            //Load the list of keywords from the Keywords table //same as ShowKeywords.xaml.cs
+            listbox1.ItemsSource = GetKeywordsList();
+        }
+
+        private void AppBarButton_Click(object sender, RoutedEventArgs e) //BACK BUTTON
+        {
+            this.Frame.Navigate(typeof(MainPage));
+        }
+
+        private void AppBarButton1_Click(object sender, RoutedEventArgs e) //DELETE BUTTON
+        {
+            string selection = listbox1.SelectedItem.ToString();
+
+            DeleteSelectedKeyword(selection);
+        }
+
+
+
+
+
+
+
+
+
+        // // // // // //
+        //// METHODS ////
+        // // // // // //
+        public List<string> GetKeywordsList()
+        {
             try
             {
                 string query = "SELECT * FROM Keywords ORDER BY Name;";
@@ -62,7 +90,7 @@ namespace App_project
                         {
                             Debug.WriteLine("AMOUNT OF ITEMS in Keywords:{0}", i);
                         }
-                        listbox1.ItemsSource = LijstKeywords;
+                        return LijstKeywords;
                     };
                 };
             }
@@ -71,17 +99,11 @@ namespace App_project
                 Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
                 throw;
             }
+
         }
 
-        private void AppBarButton_Click(object sender, RoutedEventArgs e) //BACK BUTTON
+        private void DeleteSelectedKeyword(string selection)
         {
-            this.Frame.Navigate(typeof(MainPage));
-        }
-
-        private void AppBarButton1_Click(object sender, RoutedEventArgs e) //DELETE BUTTON
-        {
-            string selection = listbox1.SelectedItem.ToString();
-
             if (selection != "Nothing to show!" && selection != "")
             {
                 Debug.WriteLine(" ***   Selection to delete: {0}", listbox1.SelectedItem.ToString());
@@ -99,25 +121,6 @@ namespace App_project
                         }
                         Debug.WriteLine(" ***   Row {0} deleted in Keywords db!", selection);
 
-                    };
-                }
-                catch (SQLiteException ex)
-                {
-                    Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
-                    throw;
-                }
-                try
-                {
-                    string query = "DELETE FROM Items WHERE Word=@keyword;";
-                    using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
-                    {
-                        using (ISQLiteStatement statement = conn.Prepare(query))
-                        {
-                            statement.Bind("@keyword", selection);
-                            statement.Step();
-                            statement.Reset();
-                        }
-                        Debug.WriteLine(" ***   Rows with Word={0} deleted in Items db!", selection);
                     };
                 }
                 catch (SQLiteException ex)
