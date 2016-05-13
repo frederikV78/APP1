@@ -35,6 +35,16 @@ namespace App_project
         {
             this.InitializeComponent();
             this.Suspending += this.OnSuspending;
+            this.Resuming += App_Resuming;
+        }
+
+        private async void App_Resuming(object sender, object e) //zelfde code als bij de loadstate
+        {
+            RSSFeed rssFeed = (RSSFeed)App.Current.Resources["rssFeed"];
+            if (rssFeed != null)
+            {
+                await rssFeed.GetFeedAsync("http://deredactie.be/cm/vrtnieuws?mode=atom");
+            }
         }
 
         /// <summary>

@@ -126,7 +126,7 @@ namespace App_project
                     throw;
                 }
 
-                this.Frame.Navigate(typeof(ShowKeywords));
+                this.Frame.Navigate(typeof(DeleteKeyword));
             }
         }
 

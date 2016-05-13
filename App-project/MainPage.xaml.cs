@@ -1,19 +1,22 @@
 ﻿using SQLitePCL;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Linq;
+using Windows.ApplicationModel.Background;
+using Windows.Data.Xml.Dom;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.Web.Syndication;
+
+
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=391641
 
@@ -30,7 +33,6 @@ namespace App_project
 
             this.NavigationCacheMode = NavigationCacheMode.Required;
         }
-
         /// <summary>
         /// Invoked when this page is about to be displayed in a Frame.
         /// </summary>
@@ -38,37 +40,225 @@ namespace App_project
         /// This parameter is typically used to configure the page.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            //string query5 = "IF EXISTS (SELECT 1 FROM sqlite_master WHERE table_name='KEYWORDS') DROP TABLE KEYWORDS;";
+            //DeleteTable("Items");
 
+            //TODO: Prepare page for display here.
 
             // TODO: Prepare page for display here.
 
-            //string query5 = "DROP TABLE IF EXISTS Items;";
+            CreateTablesIfNotExists();
+            CountTablesItems();
+            //tekst();
+
+
+            // TODO: If your application contains multiple pages, ensure that you are
+            // handling the hardware Back button by registering for the
+            // Windows.Phone.UI.Input.HardwareButtons.BackPressed event.
+            // If you are using the NavigationHelper provided by some templates,
+            // this event is handled for you.
+        }
+
+        private void btnOnToonKernwoorden_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(ShowKeywords));
+        }
+
+        private void btnOnAddKeyword_Click(object sender, RoutedEventArgs e)
+        {
+            string keyword = keywordTextBox.Text;
+            if (keyword != "")
+            {
+                AddKeyword(keyword);
+            }
+            keyword = "";
+            CountTablesItems();
+
+
+        }
+
+        private void btnOnDelKeyword_Click(object sender, RoutedEventArgs e)
+        {
+            string keyword = keywordTextBox.Text;
+
+            if (keyword != "")
+            {
+                DeleteKeyword(keyword);
+            }
+            else
+            {
+                this.Frame.Navigate(typeof(DeleteKeyword));
+            }
+
+            CountTablesItems();
+            keyword = "";
+        }
+
+        private void btnOnUpdateRssfeed_Click(object sender, RoutedEventArgs e)
+        {
+            loadRSSFeed();
+        }
+
+
+
+        // // // // // //
+        //// METHODS ////
+        // // // // // //
+        private async void loadRSSFeed()  
+        {
             //try
             //{
-            //    using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
+            //    using (HttpClient client = new HttpClient())
             //    {
-            //        using (ISQLiteStatement statement = conn.Prepare(query5))
+
+            //        Uri url = new Uri("http://deredactie.be/cm/vrtnieuws?mode=atom");
+
+            //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            //        HttpResponseMessage response = await client.GetAsync(url);
+
+            //        if (response.IsSuccessStatusCode)
             //        {
-            //            statement.Step();
-            //            statement.Reset();
-            //            Debug.WriteLine(" ***   Items table deleted");
+            //            var data = response.Content.ReadAsStringAsync();
+            //            var weatherdata =  JsonConvert.DeserializeObject<RSSItem>(data.Result.ToString());
+
+
+
             //        }
-            //    };
+
+
+
+            //    }
             //}
             //catch (Exception ex)
             //{
-            //    Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
             //    throw;
+
             //}
 
+            try
+            {
+                string newPubDate = "";
+                string oldPubDate;
+                bool newFeed;
+
+                HttpClient client = new HttpClient();
+                string rssText = await client.GetStringAsync(new Uri("http://www.hln.be/rss.xml", UriKind.Absolute));
+                XElement rssElements = XElement.Parse(rssText);
+                newPubDate = rssElements.Element("channel").Element("pubDate").Value;
+                //Stream rssText = await client.GetStreamAsync(new Uri("http://deredactie.be/cm/vrtnieuws?mode=atom"));
+
+                //XmlReader reader = XmlReader.Create(rssText);
+
+                //SyndicationFeed feed = new SyndicationFeed();
+                //////feed.Load(reader.ToString());
+
+                //////newPubDate = feed.LastUpdatedTime.ToUniversalTime().ToString();
+
+                //////reader.Dispose();
+
+                //var url = @"http://www.hln.be/rss.xml";
+                //XDocument rss = XDocument.Load(url);
 
 
+                //XElement rssElements = XElement.Parse(rss.ToString());
+                //XElement test = rssElements.Descendants("updated").FirstOrDefault();
+
+                //newPubDate = rssElements.Element("updated").Value;
+
+                ////foreach (var item in feed.Items)
+                ////{
+                ////    newPubDate = item.LastUpdatedTime.ToString();
+                ////}
 
 
+                if (ApplicationData.Current.LocalSettings.Values.ContainsKey("pubDate"))
+                {
+                    oldPubDate = (string)ApplicationData.Current.LocalSettings.Values["pubDate"];
+                    newFeed = ComparePubDate(newPubDate, oldPubDate);
+                }
+                else
+                {
+                    newFeed = true;
+                }
 
-            // TODO: Prepare page for display here.
+                if (newFeed)
+                {
+                    //save newPubDate
+                    if (ApplicationData.Current.LocalSettings.Values.ContainsKey("pubDate"))
+                    {
+                        ApplicationData.Current.LocalSettings.Values.Remove("pubDate");
+                    }
+                    ApplicationData.Current.LocalSettings.Values.Add("pubDate", newPubDate);
 
+                    ////save xml
+                    //StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync("news_feed.xml", CreationCollisionOption.ReplaceExisting);
+                    //await FileIO.WriteTextAsync(file, rssText.ToString());
+
+                    //StorageFile file2 = await ApplicationData.Current.LocalFolder.GetFileAsync("news_feed.xml");
+                    //string readFileRSS = await FileIO.ReadTextAsync(file2);
+
+                    //Debug.WriteLine(" ***   FEED: {0}", readFileRSS);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        private bool ComparePubDate(string newPubDate, string oldPubDate)
+        {
+            DateTime newDate, oldDate;
+
+            if (!DateTime.TryParse(newPubDate, out newDate))
+            {
+                return false;
+            }
+
+            if (!DateTime.TryParse(oldPubDate, out oldDate))
+            {
+                return false;
+            }
+
+            // >= om te testen, moet in werkelijkheid > zijn
+            return DateTime.Compare(newDate, oldDate) >= 0;
+        }
+
+        private async Task RegisterTask()
+        {
+            string taskName = "NewsReader task";
+            bool isTaskRegisterd = BackgroundTaskRegistration.AllTasks.Any(x => x.Value.Name == taskName);
+            if (!isTaskRegisterd)
+            {
+                BackgroundTaskBuilder builder = new BackgroundTaskBuilder();
+                builder.Name = taskName;
+                builder.TaskEntryPoint = "BTask.BackgroundTask";
+                builder.SetTrigger(new TimeTrigger(30, false));
+                builder.AddCondition(new SystemCondition(SystemConditionType.InternetAvailable));
+                BackgroundAccessStatus status = await BackgroundExecutionManager.RequestAccessAsync();
+                if (status != BackgroundAccessStatus.Denied)
+                {
+                    BackgroundTaskRegistration task = builder.Register();
+                }
+            }
+        }
+
+        private async void tekst()
+        {
+            RSSFeed rssFeed = (RSSFeed)App.Current.Resources["rssFeed"];
+            if (rssFeed != null)
+            {
+                await rssFeed.GetFeedAsync("http://deredactie.be/cm/vrtnieuws?mode=atom");
+                //this.defaultViewModel["Feed"] = rssFeed;
+            }
+
+            await RegisterTask();
+        }
+
+
+        private void CreateTablesIfNotExists()
+        {
             //CREATE Keywords TABLE IF NOT EXISTS
             string query = "CREATE TABLE IF NOT EXISTS Keywords (KId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Name varchar(30) UNIQUE);";
             using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
@@ -78,6 +268,7 @@ namespace App_project
                     statement.Step();
                     statement.Reset();
                     Debug.WriteLine(" ***   Keywords table created!");
+
                 }
             };
             //CREATE Items TABLE IF NOT EXISTS
@@ -91,139 +282,123 @@ namespace App_project
                     Debug.WriteLine(" ***   Items table created!");
                 }
             };
-
-
-            CheckTablesItems();
-
-
-            // TODO: If your application contains multiple pages, ensure that you are
-            // handling the hardware Back button by registering for the
-            // Windows.Phone.UI.Input.HardwareButtons.BackPressed event.
-            // If you are using the NavigationHelper provided by some templates,
-            // this event is handled for you.
         }
 
-        private void btnOnToonKernwoorden_Click(object sender, RoutedEventArgs e)
+        private void DeleteKeyword(string keyword)
         {
-            this.Frame.Navigate(typeof(ShowKeywords));
-
-
-
-        }
-
-        private void btnOnAddKeyword_Click(object sender, RoutedEventArgs e)
-        {
-            string keyword = keywordTextBox.Text;
-            if (keyword != "")
+            try
             {
-                try
+                string query = "DELETE FROM Keywords WHERE Name=@keyword;";
+                using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
                 {
-                    string query = "INSERT INTO Keywords (Name) VALUES (@keyword);";
-                    using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
+                    using (ISQLiteStatement statement = conn.Prepare(query))
                     {
-                        using (var statement = conn.Prepare(query))
-                        {
-                            statement.Bind("@keyword", keyword);
-                            statement.Step();
-                            statement.Reset();
-                        }
-                        Debug.WriteLine(" ***   {0} added in Keywords db!", keyword);
-                    };
-                }
-                catch (SQLiteException ex)
-                {
-                    Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
-                    //throw;
-                }
+                        statement.Bind("@keyword", keyword);
+                        statement.Step();
+                        statement.Reset();
+                    }
+                    Debug.WriteLine(" ***   Row {0} deleted in Keywords db!", keyword);
 
-                try
-                {
-                    string query = "INSERT INTO Items (Word) VALUES (@keyword);";
-                    using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
-                    {
-                        using (var statement = conn.Prepare(query))
-                        {
-                            statement.Bind("@keyword", keyword);
-                            statement.Step();
-                            statement.Reset();
-                        }
-                        Debug.WriteLine(" ***   {0} added in Items db!", keyword);
-                        keywordTextBox.Text = "";
-                        keywordTextBox.PlaceholderText = "Enter a keyword";
-                    };
-                }
-                catch (SQLiteException ex)
-                {
-                    Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
-                    //throw;
-                }
+                };
             }
-            keyword = "";
-            CheckTablesItems();
-
-
+            catch (SQLiteException ex)
+            {
+                Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
+                throw;
+            }
+            //try
+            //{
+            //    string query = "DELETE FROM Items WHERE Word=@keyword;";
+            //    using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
+            //    {
+            //        using (ISQLiteStatement statement = conn.Prepare(query))
+            //        {
+            //            statement.Bind("@keyword", keyword);
+            //            statement.Step();
+            //            statement.Reset();
+            //        }
+            //        Debug.WriteLine(" ***   Rows with Word={0} deleted in Items db!", keyword);
+            //        keywordTextBox.Text = "";
+            //        keywordTextBox.PlaceholderText = "Enter a keyword";
+            //    };
+            //}
+            //catch (SQLiteException ex)
+            //{
+            //    Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
+            //    throw;
+            //}
         }
 
-        private void btnOnDelKeyword_Click(object sender, RoutedEventArgs e)
+        private void AddKeyword(string keyword)
         {
-            string keyword = keywordTextBox.Text;
-
-            if (keyword != "")
+            try
             {
-                try
+                string query = "INSERT INTO Keywords (Name) VALUES (@keyword);";
+                using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
                 {
-                    string query = "DELETE FROM Keywords WHERE Name=@keyword;";
-                    using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
+                    using (var statement = conn.Prepare(query))
                     {
-                        using (ISQLiteStatement statement = conn.Prepare(query))
-                        {
-                            statement.Bind("@keyword", keyword);
-                            statement.Step();
-                            statement.Reset();
-                        }
-                        Debug.WriteLine(" ***   Row {0} deleted in Keywords db!", keyword);
-
-                    };
-                }
-                catch (SQLiteException ex)
-                {
-                    Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
-                    throw;
-                }
-
-                try
-                {
-                    string query = "DELETE FROM Items WHERE Word=@keyword;";
-                    using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
-                    {
-                        using (ISQLiteStatement statement = conn.Prepare(query))
-                        {
-                            statement.Bind("@keyword", keyword);
-                            statement.Step();
-                            statement.Reset();
-                        }
-                        Debug.WriteLine(" ***   Rows with Word={0} deleted in Items db!", keyword);
-                        keywordTextBox.Text = "";
-                        keywordTextBox.PlaceholderText = "Enter a keyword";
-                    };
-                }
-                catch (SQLiteException ex)
-                {
-                    Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
-                    throw;
-                }
+                        statement.Bind("@keyword", keyword);
+                        statement.Step();
+                        statement.Reset();
+                    }
+                    Debug.WriteLine(" ***   {0} added in Keywords db!", keyword);
+                };
             }
-            else
+            catch (SQLiteException ex)
             {
-                this.Frame.Navigate(typeof(DeleteKeyword));
+                Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
+                //throw;
             }
 
-            CheckTablesItems();
-            keyword = "";
+            //try
+            //{
+            //    string query = "INSERT INTO Items (Word) VALUES (@keyword);";
+            //    using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
+            //    {
+            //        using (var statement = conn.Prepare(query))
+            //        {
+            //            statement.Bind("@keyword", keyword);
+            //            statement.Step();
+            //            statement.Reset();
+            //        }
+            //        Debug.WriteLine(" ***   {0} added in Items db!", keyword);
+            //        keywordTextBox.Text = "";
+            //        keywordTextBox.PlaceholderText = "Enter a keyword";
+            //    };
+            //}
+            //catch (SQLiteException ex)
+            //{
+            //    Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
+            //    //throw;
+            //}
         }
 
+        private void DeleteTable(string table)
+        {
+            //string query5 = "IF EXISTS (SELECT 1 FROM sqlite_master WHERE table_name='KEYWORDS') DROP TABLE KEYWORDS;";
+            string query5 = "DROP TABLE IF EXISTS @table;";
+            try
+            {
+                using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
+                {
+                    using (ISQLiteStatement statement = conn.Prepare(query5))
+                    {
+                        statement.Bind("@table", table);
+                        statement.Step();
+                        statement.Reset();
+                        Debug.WriteLine(" ***   Items table deleted");
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
+                throw;
+            }
+        }
 
-        private void CheckTablesItems()
+        private void CountTablesItems()
         {
             //CHECKING HOW MANY KEYWORDS IN THE Keywords TABLE
             try
@@ -272,7 +447,6 @@ namespace App_project
                 throw;
             }
         }
-
 
 
 

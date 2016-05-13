@@ -96,7 +96,8 @@ namespace App_project
         private void AppBarButton1_Click(object sender, RoutedEventArgs e) //DETAILS BUTTON
         {
             
-            
+            //go to another page and load the Items table for the pressed/selected keyword
+            //view in a listbox with delete button from selection 
 
 
 
