@@ -95,6 +95,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RSSFeed.cs" />
     <Compile Include="RSSItem.cs" />
+    <Compile Include="ShowItemsFromKeyword.xaml.cs">
+      <DependentUpon>ShowItemsFromKeyword.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ShowKeywords.xaml.cs">
       <DependentUpon>ShowKeywords.xaml</DependentUpon>
     </Compile>
@@ -126,6 +129,10 @@
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ShowItemsFromKeyword.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ShowKeywords.xaml">
       <SubType>Designer</SubType>

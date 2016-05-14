@@ -23,10 +23,9 @@ namespace App_project
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class ShowKeywords : Page
+    public sealed partial class ShowItemsFromKeyword : Page
     {
-        
-        public ShowKeywords()
+        public ShowItemsFromKeyword()
         {
             this.InitializeComponent();
         }
@@ -36,45 +35,30 @@ namespace App_project
         /// </summary>
         /// <param name="e">Event data that describes how this page was reached.
         /// This parameter is typically used to configure the page.</param>
-        /// 
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
-
-        }
-
-
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            //Load the list of keywords from the Keywords table
-                listbox1.ItemsSource = GetKeywordsList();
+            string keyword = "nokeywordavailable";
+            keyword = (string)ApplicationData.Current.LocalSettings.Values["keyword"];
+
+            Debug.WriteLine("*** *** *** keyword: {0}  SELECTED",keyword);
+
+            listbox1.ItemsSource = GetItemsList(keyword);
+
         }
 
         private void AppBarButton_Click(object sender, RoutedEventArgs e) //BACK BUTTON
         {
-            this.Frame.Navigate(typeof(MainPage));
+            this.Frame.Navigate(typeof(ShowKeywords));
         }
 
         private void AppBarButton1_Click(object sender, RoutedEventArgs e) //DETAILS BUTTON
         {
-            //go to another page and load the Items table for the pressed/selected keyword
-            //view in a listbox with delete button from selection 
-            int test = listbox1.SelectedIndex;
+            
 
-            if (listbox1.SelectedIndex >= 0)
-            {
-                string selection = listbox1.SelectedItem.ToString();
-                selection.ToLower();
-
-                if (ApplicationData.Current.LocalSettings.Values.ContainsKey("keyword"))
-                {
-                    ApplicationData.Current.LocalSettings.Values.Remove("keyword");
-                }
-                ApplicationData.Current.LocalSettings.Values.Add("keyword", selection);
-
-                this.Frame.Navigate(typeof(ShowItemsFromKeyword));
-            }
 
         }
+
+
 
 
 
@@ -85,34 +69,36 @@ namespace App_project
         // // // // // //
         //// METHODS ////
         // // // // // //
-        public List<string> GetKeywordsList()
+        public List<string> GetItemsList(string keyword)
         {
+            //(ItemId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,KId INTEGER NOT NULL, Keyword varchar(30), Title varchar(30) UNIQUE, Link varchar(100), Description varchar(1024), PubDate varchar(30))
             try
             {
-                string query = "SELECT * FROM Keywords ORDER BY Name;";
+                string query = "SELECT ItemId,Title,Link, Description, PubDate FROM Items WHERE Keyword=@keyword ORDER BY ItemId DESC;";
                 using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
                 {
                     using (SQLitePCL.ISQLiteStatement statement = conn.Prepare(query))
                     {
-                        List<string> LijstKeywords = new List<string>();
+                        List<string> LijstItems = new List<string>();
 
                         int i = 0;
                         Debug.WriteLine("   *** START db items ***   ");
+                        statement.Bind("@keyword", keyword);
                         while (statement.Step() == SQLiteResult.ROW)
                         {
                             i++;
-                            string keyword = (string)statement[1];
-                            LijstKeywords.Add(keyword);
+                            string title = (string)statement[1];
+                            LijstItems.Add(title);
                         }
                         if (i == 0)
                         {
-                            LijstKeywords.Add("Nothing to show!");
+                            LijstItems.Add("Nothing to show!");
                         }
                         else
                         {
-                            Debug.WriteLine("AMOUNT OF ITEMS in Keywords:{0}", i);
+                            Debug.WriteLine("AMOUNT OF ITEMS in Items:{0}", i);
                         }
-                        return LijstKeywords;
+                        return LijstItems;
                     };
                 };
             }
@@ -121,7 +107,7 @@ namespace App_project
                 Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
                 throw;
             }
-            
+
         }
 
 
@@ -129,10 +115,7 @@ namespace App_project
 
 
 
-    }
-
-
 
 
     }
-
+}

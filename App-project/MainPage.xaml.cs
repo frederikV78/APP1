@@ -98,6 +98,7 @@ namespace App_project
         private void btnOnUpdateRssfeed_Click(object sender, RoutedEventArgs e)
         {
             loadRSSFeed();
+            CountTablesItems();
         }
 
 
@@ -170,7 +171,7 @@ namespace App_project
                         keyword.ToLower();
                         if (title.Contains(keyword))
                         {
-                            SaveItemElement(itemElement,keyword); //nog schrijven!!!
+                            SaveItemElement(itemElement,keyword);
                             Debug.WriteLine("*** *** ***   HIT   = {0}: {1}", keyword, title);
 
                         }
@@ -474,24 +475,30 @@ namespace App_project
         private void SaveItemElement(XElement itemElement,string keyword)
         {
             //(ItemId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, KId INTEGER NOT NULL, Keyword varchar(30), Title varchar(30) UNIQUE, Link varchar(100), description varchar(1024), PubDate varchar(30))
-
+            // CHECK IF ALLREADY EXISTS
+            bool allreadyExists = false;
             try
             {
-                string query = "INSERT INTO Items (KId,Keyword,Title,Link,Description,PubDate) VALUES (7,@keyword,@title,@link,@description,@pubdate);";
+                string query = "SELECT ItemId,Title,Link, Description, PubDate FROM Items WHERE Keyword=@keyword AND Title=@title ORDER BY ItemId DESC;";
                 using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
                 {
-                    using (var statement = conn.Prepare(query))
+                    using (SQLitePCL.ISQLiteStatement statement = conn.Prepare(query))
                     {
+                        int i = 0;
+                        string title = "";
+                        Debug.WriteLine("   *** START db items ***   ");
                         statement.Bind("@keyword", keyword);
                         statement.Bind("@title", itemElement.Element("title").Value);
-                        statement.Bind("@link", itemElement.Element("link").Value);
-                        statement.Bind("@description", itemElement.Element("description").Value);
-                        statement.Bind("@pubdate", itemElement.Element("pubDate").Value);
-                        statement.Step();
-                        statement.Reset();
-                    }
-                    Debug.WriteLine(" ***       {0}       *** added in Items db!", itemElement.Element("title").Value);
-
+                        while (statement.Step() == SQLiteResult.ROW)
+                        {
+                            i++;
+                            title = (string)statement[1];
+                        }
+                        if (i > 0)
+                        {
+                            allreadyExists = true;
+                        }
+                    };
                 };
             }
             catch (SQLiteException ex)
@@ -499,7 +506,34 @@ namespace App_project
                 Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
                 throw;
             }
+            // SAVE THE ITEM
+            if (allreadyExists)
+            {
+                try
+                {
+                    string query = "INSERT INTO Items (KId,Keyword,Title,Link,Description,PubDate) VALUES (7,@keyword,@title,@link,@description,@pubdate);";
+                    using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
+                    {
+                        using (var statement = conn.Prepare(query))
+                        {
+                            statement.Bind("@keyword", keyword);
+                            statement.Bind("@title", itemElement.Element("title").Value);
+                            statement.Bind("@link", itemElement.Element("link").Value);
+                            statement.Bind("@description", itemElement.Element("description").Value);
+                            statement.Bind("@pubdate", itemElement.Element("pubDate").Value);
+                            statement.Step();
+                            statement.Reset();
+                        }
+                        Debug.WriteLine(" ***       {0}       *** added in Items db!", itemElement.Element("title").Value);
 
+                    };
+                }
+                catch (SQLiteException ex)
+                {
+                    Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
+                    throw;
+                }
+            }
         }
 
         private void DeleteItems(string keyword)
