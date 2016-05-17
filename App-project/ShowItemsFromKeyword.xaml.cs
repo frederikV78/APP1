@@ -131,12 +131,11 @@ namespace App_project
 
         }
 
-
-
-
-
-
-
-
+        private void AppBarButton_Click_1(object sender, RoutedEventArgs e)
+        {
+            RSSItem selectedItem = (RSSItem)listbox1.SelectedItem;
+            Debug.WriteLine(" ***   SELECTION= {0}", selectedItem.Title);
+            //DeleteSelectedItem(selection);
+        }
     }
 }
