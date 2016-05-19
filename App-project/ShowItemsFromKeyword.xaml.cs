@@ -27,7 +27,7 @@ namespace App_project
     /// </summary>
     public sealed partial class ShowItemsFromKeyword : Page
     {
-
+        SQLiteMethods sqlitemethode = new SQLiteMethods();
         List<RSSItem> listItems = new List<RSSItem>();
         string keyword;
 
@@ -35,7 +35,7 @@ namespace App_project
         {
             this.InitializeComponent();
             keyword = (string)ApplicationData.Current.LocalSettings.Values["keyword"];
-            listItems = GetItemsList(keyword);
+            //listItems = GetItemsList(keyword);
         }
 
         /// <summary>
@@ -50,8 +50,8 @@ namespace App_project
 
             Debug.WriteLine("*** *** *** keyword: {0}  SELECTED",keyword);
             
-            listItems = GetItemsList(keyword);
-            listbox1.ItemsSource = listItems;
+            listItems = sqlitemethode.GetItemsList(keyword);
+            listbox2.ItemsSource = listItems;
         }
 
         private void AppBarButton_Click(object sender, RoutedEventArgs e) //BACK BUTTON
@@ -61,79 +61,16 @@ namespace App_project
 
         private async void AppBarButton1_Click(object sender, RoutedEventArgs e) //DETAILS BUTTON
         {
-            int selectedIndex = listbox1.SelectedIndex;
+            int selectedIndex = listbox2.SelectedIndex;
             //RSSItem item = new RSSItem;
             var selectedItemLink = listItems[selectedIndex].Link;
             
             await Launcher.LaunchUriAsync(selectedItemLink);
-
-
-        }
-
-
-
-
-
-
-
-
-
-        // // // // // //
-        //// METHODS ////
-        // // // // // //
-        public List<RSSItem> GetItemsList(string keyword)
-        {
-            //(ItemId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,KId INTEGER NOT NULL, Keyword varchar(30), Title varchar(30) UNIQUE, Link varchar(100), Description varchar(1024), PubDate varchar(30))
-            try
-            {       //ItemId,Title,Link, Description, PubDate
-                string query = "SELECT * FROM Items WHERE Keyword=@keyword ORDER BY ItemId DESC;";
-                using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
-                {
-                    using (SQLitePCL.ISQLiteStatement statement = conn.Prepare(query))
-                    {
-                        List<RSSItem> LijstItems = new List<RSSItem>();
-                        RSSItem item;
-
-                        int i = 0;
-                        Debug.WriteLine("   *** START db items ***   ");
-                        statement.Bind("@keyword", keyword);
-                        while (statement.Step() == SQLiteResult.ROW)
-                        {
-                            item = new RSSItem();
-                            i++;
-                            item.UniqueId = statement[0].ToString();
-                            item.Title = (string)statement[3];
-                            item.Link = new Uri(statement[4].ToString(), UriKind.Absolute);
-                            item.Description = (string)statement[5];
-                            item.PubDate = DateTime.Parse(statement[6].ToString());
-
-                            LijstItems.Add(item);
-                        }
-                        if (i == 0)
-                        {
-                            item = new RSSItem();
-                            item.Title = "Nothing to show!";
-                            LijstItems.Add(item);
-                        }
-                        else
-                        {
-                            Debug.WriteLine("AMOUNT OF ITEMS in Items:{0}", i);
-                        }
-                        return LijstItems;
-                    };
-                };
-            }
-            catch (SQLiteException ex)
-            {
-                Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
-                throw;
-            }
-
         }
 
         private void AppBarButton_Click_1(object sender, RoutedEventArgs e)
         {
-            RSSItem selectedItem = (RSSItem)listbox1.SelectedItem;
+            RSSItem selectedItem = (RSSItem)listbox2.SelectedItem;
             Debug.WriteLine(" ***   SELECTION= {0}", selectedItem.Title);
             //DeleteSelectedItem(selection);
         }

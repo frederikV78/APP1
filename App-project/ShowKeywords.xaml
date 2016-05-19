@@ -6,10 +6,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+        
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    
-    
-    
+
+
+
+
+
+
     <Page.BottomAppBar>
         <CommandBar>
             <CommandBar.PrimaryCommands>
@@ -33,7 +37,17 @@
                 <DataTemplate>
                     <Border BorderThickness="0,0,0,0" BorderBrush="#c0c0c0">
                         <Grid Width="Auto" HorizontalAlignment="Stretch">
-                            <TextBlock x:Name="KeywordLabel" Text="{Binding}" Foreground="White" FontSize="32" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="50,10,0,0" />
+                            
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Path=LabelKeyword}" Foreground="White" FontSize="32" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="50,10,0,0" />
+                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Path=LabelAmount}" Foreground="White" FontSize="32" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="50,10,0,0" />
+                            
                         </Grid>
                     </Border>
                 </DataTemplate>
