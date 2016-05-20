@@ -34,8 +34,6 @@ namespace App_project
         public ShowItemsFromKeyword()
         {
             this.InitializeComponent();
-            keyword = (string)ApplicationData.Current.LocalSettings.Values["keyword"];
-            //listItems = GetItemsList(keyword);
         }
 
         /// <summary>
@@ -73,11 +71,12 @@ namespace App_project
 
         }
 
-        private void AppBarButton_Click_1(object sender, RoutedEventArgs e)
+        private void AppBarButton_Click_1(object sender, RoutedEventArgs e) // DELETE BUTTON
         {
             RSSItem selectedItem = (RSSItem)listbox2.SelectedItem;
-            //Debug.WriteLine(" ***   SELECTION= {0}", selectedItem.Title);
-            //DeleteSelectedItem(selection);
+            sqlitemethode.DeleteSelectedItem(selectedItem.Title);
+            listItems = sqlitemethode.GetItemsList(keyword);
+            listbox2.ItemsSource = listItems;
         }
     }
 }
