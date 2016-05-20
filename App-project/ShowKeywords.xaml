@@ -44,9 +44,9 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            
-                                <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Path=LabelKeyword}" Foreground="White" FontSize="32" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="50,10,0,0" />
-                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Path=LabelAmount}" Foreground="White" FontSize="32" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="50,10,0,0" />
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Path=LabelKeyword}" Foreground="NavajoWhite" FontSize="28" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" />
+                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Path=LabelAmount}" Foreground="Cyan" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="24,10,0,0" />
                             
                         </Grid>
                     </Border>

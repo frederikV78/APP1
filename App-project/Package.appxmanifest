@@ -16,13 +16,13 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="App_project.App">
-      <m3:VisualElements DisplayName="App-project" Square150x150Logo="Assets\Logo.png" Square44x44Logo="Assets\SmallLogo.png" Description="App-project" ForegroundText="light" BackgroundColor="transparent">
+      <m3:VisualElements DisplayName="HLN news by keyword" Square150x150Logo="Assets\Logo.png" Square44x44Logo="Assets\SmallLogo.png" Description="Get news updates by a keyword trigger set on the title of the article." ForegroundText="light" BackgroundColor="transparent">
         <m3:DefaultTile Wide310x150Logo="Assets\WideLogo.png" Square71x71Logo="Assets\Square71x71Logo.png">
         </m3:DefaultTile>
         <m3:SplashScreen Image="Assets\SplashScreen.png" />
       </m3:VisualElements>
       <Extensions>
-        <Extension Category="windows.backgroundTasks" EntryPoint="BTasK.BackGroundTask">
+        <Extension Category="windows.backgroundTasks" EntryPoint="BTask.BackGroundTask">
           <BackgroundTasks>
             <Task Type="timer" />
           </BackgroundTasks>

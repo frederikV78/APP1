@@ -8,24 +8,24 @@ using System.Threading.Tasks;
 
 namespace App_project
 {
-    public class KeywordsListItem : INotifyPropertyChanged
+    public class KeywordsListItem /*: INotifyPropertyChanged*/
     {
-        private string _item;
+        //private string _item;
 
-        public string Item
-        {
-            get { return _item; }
-            set {
-                    _item = value;
-                    OnPropertyChanged();
-                }
-        }
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
-        }
+        //public string Item
+        //{
+        //    get { return _item; }
+        //    set {
+        //            _item = value;
+        //            OnPropertyChanged();
+        //        }
+        //}
+        //public event PropertyChangedEventHandler PropertyChanged;
+        //protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        //{
+        //    PropertyChangedEventHandler handler = PropertyChanged;
+        //    if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        //}
 
 
     }

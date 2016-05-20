@@ -29,6 +29,8 @@ namespace App_project
             this.InitializeComponent();
         }
 
+        SQLiteMethods sqlitemethode = new SQLiteMethods();
+
         /// <summary>
         /// Invoked when this page is about to be displayed in a Frame.
         /// </summary>
@@ -37,7 +39,7 @@ namespace App_project
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             //Load the list of keywords from the Keywords table //same as ShowKeywords.xaml.cs
-            listbox1.ItemsSource = GetKeywordsList();
+            listbox1.ItemsSource = sqlitemethode.GetKeywordsList();
         }
 
         private void AppBarButton_Click(object sender, RoutedEventArgs e) //BACK BUTTON
@@ -49,7 +51,12 @@ namespace App_project
         {
             string selection = listbox1.SelectedItem.ToString();
 
-            DeleteSelectedKeyword(selection);
+            sqlitemethode.DeleteSelectedKeyword(selection);
+
+            if (selection != "Nothing to show!" && selection != "")
+            { 
+                this.Frame.Navigate(typeof(DeleteKeyword));
+            }
         }
 
 
@@ -63,96 +70,46 @@ namespace App_project
         // // // // // //
         //// METHODS ////
         // // // // // //
-        public List<string> GetKeywordsList()
-        {
-            try
-            {
-                string query = "SELECT * FROM Keywords ORDER BY Name;";
-                using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
-                {
-                    using (SQLitePCL.ISQLiteStatement statement = conn.Prepare(query))
-                    {
-                        List<string> LijstKeywords = new List<string>();
+        //public List<string> GetKeywordsList()
+        //{
+        //    try
+        //    {
+        //        string query = "SELECT * FROM Keywords ORDER BY Name;";
+        //        using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
+        //        {
+        //            using (SQLitePCL.ISQLiteStatement statement = conn.Prepare(query))
+        //            {
+        //                List<string> LijstKeywords = new List<string>();
 
-                        int i = 0;
-                        Debug.WriteLine("   *** START db items ***   ");
-                        while (statement.Step() == SQLiteResult.ROW)
-                        {
-                            i++;
-                            string keyword = (string)statement[1];
-                            LijstKeywords.Add(keyword);
-                        }
-                        if (i == 0)
-                        {
-                            LijstKeywords.Add("Nothing to show!");
-                        }
-                        else
-                        {
-                            Debug.WriteLine("AMOUNT OF ITEMS in Keywords:{0}", i);
-                        }
-                        return LijstKeywords;
-                    };
-                };
-            }
-            catch (SQLiteException ex)
-            {
-                Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
-                throw;
-            }
+        //                int i = 0;
+        //                Debug.WriteLine("   *** START db items ***   ");
+        //                while (statement.Step() == SQLiteResult.ROW)
+        //                {
+        //                    i++;
+        //                    string keyword = (string)statement[1];
+        //                    LijstKeywords.Add(keyword);
+        //                }
+        //                if (i == 0)
+        //                {
+        //                    LijstKeywords.Add("Nothing to show!");
+        //                }
+        //                else
+        //                {
+        //                    Debug.WriteLine("AMOUNT OF ITEMS in Keywords:{0}", i);
+        //                }
+        //                return LijstKeywords;
+        //            };
+        //        };
+        //    }
+        //    catch (SQLiteException ex)
+        //    {
+        //        Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
+        //        throw;
+        //    }
 
-        }
+        //}
 
-        private void DeleteSelectedKeyword(string selection)
-        {
-            if (selection != "Nothing to show!" && selection != "")
-            {
-                Debug.WriteLine(" ***   Selection to delete: {0}", listbox1.SelectedItem.ToString());
-
-                try
-                {
-                    string query = "DELETE FROM Keywords WHERE Name=@keyword;";
-                    using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
-                    {
-                        using (ISQLiteStatement statement = conn.Prepare(query))
-                        {
-                            statement.Bind("@keyword", selection);
-                            statement.Step();
-                            statement.Reset();
-                        }
-                        Debug.WriteLine(" ***   Row {0} deleted in Keywords db!", selection);
-
-                    };
-                }
-                catch (SQLiteException ex)
-                {
-                    Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
-                    throw;
-                }
-
-                try
-                {
-                    string query = "DELETE FROM Items WHERE keyword=@keyword;";
-                    using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
-                    {
-                        using (ISQLiteStatement statement = conn.Prepare(query))
-                        {
-                            statement.Bind("@keyword", selection);
-                            statement.Step();
-                            statement.Reset();
-                        }
-                        Debug.WriteLine(" ***   Rows with Word={0} deleted in Items db!", selection);
-
-                    };
-                }
-                catch (SQLiteException ex)
-                {
-                    Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
-                    throw;
-                }
-
-                this.Frame.Navigate(typeof(DeleteKeyword));
-            }
-        }
+ 
 
 
 

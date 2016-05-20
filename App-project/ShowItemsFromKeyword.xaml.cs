@@ -48,7 +48,7 @@ namespace App_project
             keyword = "nokeywordavailable";
             keyword = (string)ApplicationData.Current.LocalSettings.Values["keyword"];
 
-            Debug.WriteLine("*** *** *** keyword: {0}  SELECTED",keyword);
+            //Debug.WriteLine("*** *** *** keyword: {0}  SELECTED",keyword);
             
             listItems = sqlitemethode.GetItemsList(keyword);
             listbox2.ItemsSource = listItems;
@@ -63,15 +63,20 @@ namespace App_project
         {
             int selectedIndex = listbox2.SelectedIndex;
             //RSSItem item = new RSSItem;
-            var selectedItemLink = listItems[selectedIndex].Link;
-            
-            await Launcher.LaunchUriAsync(selectedItemLink);
+            var selectedItemTitle = listItems[selectedIndex].Title;
+            if (selectedItemTitle != "" && selectedItemTitle != "Nothing to show!")
+            {
+                var selectedItemLink = listItems[selectedIndex].Link;
+
+                await Launcher.LaunchUriAsync(selectedItemLink);
+            }
+
         }
 
         private void AppBarButton_Click_1(object sender, RoutedEventArgs e)
         {
             RSSItem selectedItem = (RSSItem)listbox2.SelectedItem;
-            Debug.WriteLine(" ***   SELECTION= {0}", selectedItem.Title);
+            //Debug.WriteLine(" ***   SELECTION= {0}", selectedItem.Title);
             //DeleteSelectedItem(selection);
         }
     }
