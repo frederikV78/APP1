@@ -1,37 +1,68 @@
 ﻿<Page
-    x:Class="App_project.ShowItemsFromKeyword"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    
     xmlns:local="using:App_project"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Converters="using:App_project.Converters"
+    x:Class="App_project.ShowItemsFromKeyword"
     mc:Ignorable="d"
+
+
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+
 
     <Page.BottomAppBar>
         <CommandBar>
-            <CommandBar.PrimaryCommands>
-                <AppBarButton Label="Back" Icon="Back" Click="AppBarButton_Click"/>
-                <AppBarButton Label="Details" Icon="ShowResults" Click="AppBarButton1_Click"/>
-            </CommandBar.PrimaryCommands>
+            <AppBarButton Label="Back" Icon="Back" Click="AppBarButton_Click"/>
+            <AppBarButton Label="Delete" Icon="Delete" Click="AppBarButton_Click_1"/>
+            <AppBarButton Label="To browser" Icon="Download" Click="AppBarButton1_Click"/>
         </CommandBar>
     </Page.BottomAppBar>
 
+    <!--<Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
+        <ListView x:Name="listView1" ItemsSource="{Binding Items}">
+
+            -->
+    <!--IsItemClickEnabled="True"
+                      ItemClick="ItemView_ItemClick">-->
+    <!--
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Margin="0,0,0,9.5">
+                        <TextBlock Text="{Binding PubDate}"
+                                       TextWrapping="Wrap"
+                                       Style="{StaticResource ListViewItemSubheaderTextBlockStyle}"
+                                       Margin="0,0,19,0"/>
+                        <TextBlock Text="{Binding Title}"
+                                       TextWrapping="Wrap"
+                                       Style="{StaticResource ListViewItemTextBlockStyle}"
+                                       Margin="0,0,19,0"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>-->
+
     <Grid>
-        <ListBox x:Name="listbox1" Margin="25,25,25,25" Background="Black">
+        <ListBox x:Name="listbox2" Margin="25,25,25,25" Background="Black">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Left" >
-
-                    </Setter>
+                    <Setter Property="HorizontalContentAlignment" Value="Left" />
                 </Style>
             </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Border BorderThickness="0,0,0,0" BorderBrush="#c0c0c0">
+                    <Border BorderThickness="0,1,0,1" BorderBrush="DarkCyan">
+                        <StackPanel x:Name="rssItem">
                         <Grid Width="Auto" HorizontalAlignment="Stretch">
-                            <TextBlock x:Name="KeywordLabel" Text="{Binding}" Foreground="White" FontSize="32" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="50,10,0,0" />
+                            <TextBlock x:Name="KeywordLabel" Text="{Binding Path=PubDate}" TextWrapping="Wrap" Foreground="Cyan" FontSize="18" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,5,5,5" />
+                            <TextBlock x:Name="ContentLabel" Text="{Binding Path=Title}" TextWrapping="Wrap" Foreground="NavajoWhite" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,30,5,5" >
+                            </TextBlock>
                         </Grid>
+                        </StackPanel>
                     </Border>
                 </DataTemplate>
             </ListBox.ItemTemplate>

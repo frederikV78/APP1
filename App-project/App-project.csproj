@@ -85,9 +85,12 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\PubDateConverter.cs" />
     <Compile Include="DeleteKeyword.xaml.cs">
       <DependentUpon>DeleteKeyword.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FeedMethods.cs" />
+    <Compile Include="Keyword.cs" />
     <Compile Include="KeywordsListItem.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -101,8 +104,7 @@
     <Compile Include="ShowKeywords.xaml.cs">
       <DependentUpon>ShowKeywords.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SQLite.cs" />
-    <Compile Include="SQLiteAsync.cs" />
+    <Compile Include="SQLiteMethods.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -143,8 +145,8 @@
     <SDKReference Include="Microsoft.VCLibs, version=12.0">
       <Name>Microsoft Visual C++ 2013 Runtime Package for Windows Phone</Name>
     </SDKReference>
-    <SDKReference Include="SQLite.WP81, Version=3.11.1">
-      <Name>SQLite for Windows Phone 8.1</Name>
+    <SDKReference Include="SQLite.WP81, Version=3.13.0">
+      <Name>SQLite for Windows Phone 8.1 %28SQLite.WP81, Version=3.13.0%29</Name>
     </SDKReference>
   </ItemGroup>
   <ItemGroup>
@@ -154,14 +156,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BTask\BTask.csproj">
-      <Project>{3f603aaa-592c-47ef-bf05-4fbbc05d3e79}</Project>
-      <Name>BTask</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
   </PropertyGroup>
@@ -175,10 +173,8 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\SQLitePCL.3.8.7.2\build\wpa81\SQLitePCL.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SQLitePCL.3.8.7.2\build\wpa81\SQLitePCL.props'))" />
     <Error Condition="!Exists('..\packages\SQLitePCL.3.8.7.2\build\wpa81\SQLitePCL.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SQLitePCL.3.8.7.2\build\wpa81\SQLitePCL.targets'))" />
-    <Error Condition="!Exists('..\packages\SQLite.Core.WindowsPhone.2016.04.18.1\build\wpa81\SQLite.Core.WindowsPhone.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SQLite.Core.WindowsPhone.2016.04.18.1\build\wpa81\SQLite.Core.WindowsPhone.targets'))" />
   </Target>
   <Import Project="..\packages\SQLitePCL.3.8.7.2\build\wpa81\SQLitePCL.targets" Condition="Exists('..\packages\SQLitePCL.3.8.7.2\build\wpa81\SQLitePCL.targets')" />
-  <Import Project="..\packages\SQLite.Core.WindowsPhone.2016.04.18.1\build\wpa81\SQLite.Core.WindowsPhone.targets" Condition="Exists('..\packages\SQLite.Core.WindowsPhone.2016.04.18.1\build\wpa81\SQLite.Core.WindowsPhone.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

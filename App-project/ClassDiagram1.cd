@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="App_project.App" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAQAAAAAAIAAg=</HashCode>
+      <FileName>App.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="App_project.DeleteKeyword" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAgAEAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DeleteKeyword.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="App_project.FeedMethods" Collapsed="true">
+    <Position X="4.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAIIQAAAAAAAAAAAAAAAAAAgAAAAAAEAAA=</HashCode>
+      <FileName>FeedMethods.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="App_project.Keyword" Collapsed="true">
+    <Position X="6" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>Keyword.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="App_project.KeywordsListItem" Collapsed="true">
+    <Position X="0.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>KeywordsListItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="App_project.MainPage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAghABAAAAABAAAAQAEAgAAAAgAAAAAAEAAAA=</HashCode>
+      <FileName>MainPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="App_project.RSSItem" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAQAAgAEAAIAIAAAAAgAAAAAAAAAAAQAAAQEA=</HashCode>
+      <FileName>RSSItem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="App_project.ShowItemsFromKeyword" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAgAFAAAAAAAAAAQBAAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ShowItemsFromKeyword.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="App_project.ShowKeywords" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAEAAAAAAAAAAQAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>ShowKeywords.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="App_project.SQLiteMethods">
+    <Position X="6" Y="2.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAEACAAABAAIAEAEAAAAAAAAMABAAgBAAAAAAAg=</HashCode>
+      <FileName>SQLiteMethods.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="App_project.Converters.PubDateConverter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Converters\PubDateConverter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.217" Collapsed="true" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

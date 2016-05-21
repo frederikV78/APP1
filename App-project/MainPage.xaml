@@ -13,40 +13,47 @@
     <Grid>
         <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
             <StackPanel>
+                <TextBlock Text="Follow up on HLN newsfeed:" FontWeight="Bold" Style="{ThemeResource TitleTextBlockStyle}"  Margin="0,12,-0.333,0"/>
+                <TextBlock Text="" Style="{ThemeResource TitleTextBlockStyle}"  Margin="0,12,-0.333,0"/>
+                
                 <Button 
                  x:Name="btnOnShowKeywords" 
                  Content="Show keywords" 
+                    Foreground="WhiteSmoke"
                  HorizontalAlignment="center"
                  Width="300" Click="btnOnToonKernwoorden_Click"/>
 
                 <Button 
                  x:Name="btnOnAddKeyword" 
                  Content="Add keyword" 
+                    Foreground="WhiteSmoke"
                  HorizontalAlignment="center"
                  Width="300" Click="btnOnAddKeyword_Click"/>
 
-                <TextBox Width="300" HorizontalAlignment="center" x:Name="keywordTextBox"
-                         PlaceholderText="Enter a keyword" Text="{Binding Path=Keyword, Mode=OneWay}">
+                <TextBox Width="300" HorizontalAlignment="center" x:Name="keywordTextBox" Background="DarkGray"
+                         PlaceholderText="Enter a keyword" FontStyle="Italic" Text="{Binding Path=Keyword}">
                     
                 </TextBox> 
 
                  <Button 
                  x:Name="btnOnDelKeyword" 
                  Content="Delete keyword" 
+                     Foreground="WhiteSmoke"
                  HorizontalAlignment="center"
                  Width="300" Click="btnOnDelKeyword_Click"/>
 
                 <Button 
                  x:Name="btnOnUpdateRssfeed" 
                  Content="Update RSSFeed" 
+                    Foreground="WhiteSmoke"
                  HorizontalAlignment="center"
                  Width="300" Click="btnOnUpdateRssfeed_Click"/>
 
-                <TextBlock Text="Database statistics:" Style="{ThemeResource TitleTextBlockStyle}"  Margin="0,12,-0.333,0"/>
-
-                <Grid Grid.Row="1" x:Name="Content2Root" Margin="19,9.5,19,0">
-
+                <TextBlock Text="" Style="{ThemeResource TitleTextBlockStyle}"  Margin="0,12,-0.333,0"/>
+                <Grid x:Name="Content2Root" Margin="19,9.5,18.667,0">
+                    
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
@@ -55,21 +62,21 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Database statistics:" Foreground="LightGray" Style="{ThemeResource TitleTextBlockStyle}"  Margin="0,12,-0.333,0"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Number of items:" Foreground="WhiteSmoke" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,17,51.667,6.167" RenderTransformOrigin="0.502,0.47"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" x:Name="LabelAmountOfItems" Foreground="WhiteSmoke" Text="{Binding AmountOfItems}"
+                		TextWrapping="Wrap"
+                		Style="{StaticResource SubheaderTextBlockStyle}"
+                		Margin="191,4,-3.667,6.583" RenderTransformOrigin="0.498,0.5" Grid.ColumnSpan="4"/>
 
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Number of items:" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,17,51.667,6.167" RenderTransformOrigin="0.502,0.47"/>
-                    <TextBlock Grid.Row="0" Grid.Column="0" x:Name="LabelAmountOfItems" Text="{Binding AmountOfItems}"
-                               TextWrapping="Wrap"
-                               Style="{StaticResource SubheaderTextBlockStyle}"
-                               Margin="191,4,-3.667,6.583" RenderTransformOrigin="0.498,0.5" Grid.ColumnSpan="4"/>
-
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Number of keywords:" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,16.833,12.667,4.5" RenderTransformOrigin="0.502,0.47"/>
-                    <TextBlock Grid.Row="1" Grid.Column="0" x:Name="LabelAmountOfKeywords" Text="{Binding AmountOfKeywords}"
-                               TextWrapping="Wrap"
-                               Style="{StaticResource SubheaderTextBlockStyle}"
-                               Margin="191,4,-3.667,6.583" RenderTransformOrigin="0.498,0.5" Grid.ColumnSpan="4"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Number of keywords:" Foreground="WhiteSmoke" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,16.833,12.667,4.5" RenderTransformOrigin="0.502,0.47"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0" x:Name="LabelAmountOfKeywords" Foreground="WhiteSmoke" Text="{Binding AmountOfKeywords}"
+                		TextWrapping="Wrap"
+                		Style="{StaticResource SubheaderTextBlockStyle}"
+                		Margin="191,4,-3.667,6.583" RenderTransformOrigin="0.498,0.5" Grid.ColumnSpan="4"/>
 
                 </Grid>
-                <TextBlock Text="Bron: deredactie.be" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,264.667,0" Height="22" RenderTransformOrigin="0.502,0.47" FontSize="10.667"/>
+                <TextBlock Text="Bron: hln.be" Foreground="Gray" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,264.667,0" Height="22" RenderTransformOrigin="0.502,0.47" FontSize="10.667"/>
             </StackPanel>
         </Grid>
     </Grid>

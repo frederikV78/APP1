@@ -12,7 +12,7 @@
         <CommandBar>
             <CommandBar.PrimaryCommands>
                 <AppBarButton Label="Back" Icon="Back" Click="AppBarButton_Click"/>
-                <AppBarButton Label="Wis item" Icon="Delete" Click="AppBarButton1_Click"/>
+                <AppBarButton Label="Delete" Icon="Delete" Click="AppBarButton1_Click"/>
             </CommandBar.PrimaryCommands>
         </CommandBar>
     </Page.BottomAppBar>

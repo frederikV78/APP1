@@ -4,17 +4,23 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:App_project">
 
+
+
     <Application.Resources>
         <ResourceDictionary>
-            <!--<ResourceDictionary.ThemeDictionaries>-->
-                <!--<ResourceDictionary x:Key="TextBoxPlaceholderTextThemeBrush">
-                    <SolidColorBrush x:Key="TextBoxPlaceholderTextThemeBrush" Color="Gray"/>-->
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="TextBoxPlaceholderTextThemeBrush">
+                    <SolidColorBrush x:Key="TextBoxPlaceholderTextThemeBrush" Color="Gray"/>
                 <Style TargetType="TextBox" x:Key="TextBoxPlaceholderText">
                         <Setter Property="FontSize"  Value="12" />
                     </Style>
-                <!--</ResourceDictionary>-->
-            <!--</ResourceDictionary.ThemeDictionaries>-->
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+
         </ResourceDictionary>
+
     </Application.Resources>
+
+
 
 </Application>
