@@ -1,0 +1,68 @@
+Werking en gebruik van de applicatie:
+De hoofdopzet van de applicatie is het opvolgen van onderwerpen 
+die terugkeren in het dagelijkse nieuws (van de hln rss feed). 
+Dit wordt mogelijk als we gaan controleren op kernwoorden die 
+voorkomen in de titel. Meestal zal dit het onderwerp zijn van 
+een artikel wat we reeds eerder lazen en door verdere interesse 
+willen opvolgen. Dus de kans is vrij groot dat hetzelfde woord 
+zal worden aangehaald in de titel van nieuwe artikelen die over 
+hetzelfde onderwerp gaan. Op deze manier volgen we dus 
+eenvoudigweg een onderwerp op door proactief naar kernwoorden 
+te gaan zoeken in alle titels van nieuwe artikelen en deze bij 
+te houden om op een gepast ogenblik te gaan lezen.
+We starten met een lege lijst van kernwoorden als de app voor 
+de eerste keer wordt opgestart dus als eerste zullen we een 
+reeks woorden in deze lijst moeten toevoegen die onze 
+interesses beschrijven. We doen dit door in het tekstveld het 
+woord in te typen en op de drukknop ‘Add keyword’ te drukken. 
+Als gevolg zien we meteen onderaan de pagina een update van de 
+database gegevens: het aantal kernwoorden opgeslagen en het 
+aantal artikels waar ten minste één van de kernwoorden in 
+voorkomt. 
+Het verwijderen van een kernwoord gebeurd op exact dezelfde 
+manier, echter met de drukknop ‘Delete keyword’, wanneer er 
+geen kernwoord wordt opgegeven in het tekstveld zal er een 
+lijst van de opgeslagen kernwoorden verschijnen waaruit we 
+één woord kunnen selecteren en vervolgens onderaan op de 
+‘Delete’ knop drukken om dit uit deze lijst te verwijderen, 
+we krijgen meteen de up-to-date lijst te zien waaruit we 
+opnieuw een kernwoord kunnen verwijderen ofwel teruggaan 
+naar het beginscherm met de drukknop ‘Back’.
+Vanuit het beginscherm kunnen we nu de lijst van kernwoorden 
+gaan raadplegen door op de drukknop ‘Show keywords’ te drukken. 
+We krijgen een de lijst van kernwoorden te zien net zoals 
+wanneer we een kernwoord gaan verwijderen en het tekstveld 
+leeglaten. Als extra zien we achter het kernwoord telkens een 
+getal tussen vierkante haakjes staan, dit zijn het aantal 
+artikelen waar het kernwoord in de titel voorkomt en zijn 
+opgeslagen in het verleden. Wanneer we weer een selectie van 
+één kernwoord maken in deze lijst en onderaan op de drukknop 
+‘Details’ drukken zien we de lijst van deze artikelen 
+gerangschikt in volgorde van verschijnen. In deze lijst kunnen
+ we weer één selectie maken. Van hieruit kunnen we het artikel 
+raadplegen op de website van de maker van het artikel (hln.be) 
+door op de drukknop ‘To browser’ te drukken, de applicatie zal 
+op de achtergrond blijven draaien in dit geval zodat u later 
+kan terugkeren na het lezen van het volledige artikel. Of we 
+kunnen op de drukknop ‘Delete’ drukken en het betreffende 
+artikel uit onze lijst verwijderen, waardoor de lijst 
+up-to-date weer zal verschijnen EN dit artikel zal vanaf nu 
+worden genegeerd door de applicatie in de toekomst.
+We kunnen de controle naar een nieuwe rss feed manueel éénmalig 
+activeren door een druk op de drukknop ‘UpdateRSSFeed’. Op de 
+achtergrond controleert de applicatie bij start en vanaf dan na 
+elke 10 minuten of er een nieuwe rss feed beschikbaar is en zo 
+ja op inhoud. Wanneer dit zo is en er een nieuw artikel 
+beschikbaar komt zal er een toast worden verstuurd naar uw 
+toestel zijn besturingssysteem met de vermelding van de 
+hoeveelheid nieuwe artikelen die zijn toegevoegd en dus kunnen 
+worden gelezen. 
+De tegel voor het startscherm van uw toestel geeft ook in de 
+twee grootste weergavetoestanden weer wanneer er laatst werd 
+gecontroleerd op een nieuwe rss feed en of er nieuwe artikelen 
+zijn toegevoegd tijdens deze laatste update tezamen met het 
+totale aantal.
+Wanneer de applicatie 24/7 zou actief zijn en dus om de 10 
+minuten gaat controleren naar een nieuwe rss feed, dan moet 
+u rekenen op een gemiddeld maandelijks netwerkverbruik van 
+270 tot 340 MB afhankelijk van de inhoud van de rss feed.
