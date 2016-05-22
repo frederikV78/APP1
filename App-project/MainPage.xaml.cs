@@ -71,8 +71,7 @@ namespace App_project
             sqlitemethode.CreateTablesIfNotExists();
             LabelAmountOfItems.Text = sqlitemethode.CountTableItems();
             LabelAmountOfKeywords.Text = sqlitemethode.CountTableKeywords();
-            //RegisterBTask(); //Register BackgroundTask
-            
+           
 
 
             // TODO: If your application contains multiple pages, ensure that you are
@@ -127,46 +126,6 @@ namespace App_project
             LabelAmountOfItems.Text = sqlitemethode.CountTableItems();
             keywordTextBox.Text = "";
         }
-
-
-
-
-
-
-
-
-        // // // // // //
-        //// METHODS ////
-        // // // // // //
-
-
-
-
-        private async Task RegisterTask()
-        {
-            string taskName = "NewsFeed Reader task";
-            bool isTaskRegisterd = BackgroundTaskRegistration.AllTasks.Any(x => x.Value.Name == taskName);
-            if (!isTaskRegisterd)
-            {
-                BackgroundTaskBuilder builder = new BackgroundTaskBuilder();
-                builder.Name = taskName;
-                builder.TaskEntryPoint = "BTask.BackGroundTask";
-                builder.SetTrigger(new TimeTrigger(30, false));
-                builder.AddCondition(new SystemCondition(SystemConditionType.InternetAvailable));
-                BackgroundAccessStatus status = await BackgroundExecutionManager.RequestAccessAsync();
-                if (status != BackgroundAccessStatus.Denied)
-                {
-                    BackgroundTaskRegistration task = builder.Register();
-                }
-            }
-        }
-
-        private async void RegisterBTask()
-        {
-            await RegisterTask();
-        }
-
-
 
 
 

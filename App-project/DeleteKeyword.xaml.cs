@@ -38,7 +38,7 @@ namespace App_project
         /// This parameter is typically used to configure the page.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            //Load the list of keywords from the Keywords table //same as ShowKeywords.xaml.cs
+            //Load the list of keywords from the Keywords table 
             listbox1.ItemsSource = sqlitemethode.GetKeywordsList();
         }
 

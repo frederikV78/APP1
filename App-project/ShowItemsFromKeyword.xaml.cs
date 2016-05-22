@@ -57,18 +57,24 @@ namespace App_project
             this.Frame.Navigate(typeof(ShowKeywords));
         }
 
-        private async void AppBarButton1_Click(object sender, RoutedEventArgs e) //DETAILS BUTTON
+        private async void AppBarButton1_Click(object sender, RoutedEventArgs e) //BROWSER BUTTON
         {
             int selectedIndex = listbox2.SelectedIndex;
-            //RSSItem item = new RSSItem;
-            var selectedItemTitle = listItems[selectedIndex].Title;
-            if (selectedItemTitle != "" && selectedItemTitle != "Nothing to show!")
+            try
             {
-                var selectedItemLink = listItems[selectedIndex].Link;
+                var selectedItemTitle = listItems[selectedIndex].Title;
+                if (selectedItemTitle != "" && selectedItemTitle != "Nothing to show!")
+                {
+                    var selectedItemLink = listItems[selectedIndex].Link;
 
-                await Launcher.LaunchUriAsync(selectedItemLink);
+                    await Launcher.LaunchUriAsync(selectedItemLink);
+                }
             }
-
+            catch (ArgumentOutOfRangeException ex)
+            {
+                Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
+                //throw;
+            }
         }
 
         private void AppBarButton_Click_1(object sender, RoutedEventArgs e) // DELETE BUTTON

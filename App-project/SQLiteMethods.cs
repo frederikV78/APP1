@@ -206,8 +206,8 @@ namespace App_project
             }
             catch (SQLiteException ex)
             {
-                Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
-                throw;
+                //Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
+                //throw;
             }
         }
 
@@ -228,30 +228,8 @@ namespace App_project
             }
             catch (SQLiteException ex)
             {
-                Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
+                //Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
                 //throw;
-            }
-        }
-
-        public void DeleteTable(string table)
-        {
-            string query5 = "DROP TABLE IF EXISTS items;";
-            try
-            {
-                using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
-                {
-                    using (ISQLiteStatement statement = conn.Prepare(query5))
-                    {
-                        statement.Step();
-                        statement.Reset();
-                        Debug.WriteLine(" ***   Items table deleted");
-                    }
-                };
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
-                throw;
             }
         }
 
@@ -439,7 +417,7 @@ namespace App_project
             catch (SQLiteException ex)
             {
                 Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
-                throw;
+                //throw;
             }
 
             //CREATE TABLE IF NOT EXISTS Deleted (DeletedId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Title varchar(30) UNIQUE);
@@ -486,7 +464,7 @@ namespace App_project
                 catch (SQLiteException ex)
                 {
                     Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
-                    throw;
+                    //throw;
                 }
 
                 try
@@ -501,13 +479,12 @@ namespace App_project
                             statement.Reset();
                         }
                         //Debug.WriteLine(" ***   Rows with Word={0} deleted in Items db!", selection);
-
                     };
                 }
                 catch (SQLiteException ex)
                 {
                     Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
-                    throw;
+                    //throw;
                 }
 
             }
