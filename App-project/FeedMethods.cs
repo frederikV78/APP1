@@ -15,7 +15,7 @@ namespace App_project
     {
         SQLiteMethods sqlitemethode = new SQLiteMethods();
 
-        public async Task loadRSSFeed()
+        public async Task LoadRSSFeed()
         {
             try
             {
@@ -30,8 +30,7 @@ namespace App_project
                 newPubDate = rssElements.Element("channel").Element("pubDate").Value;
                 List<string> keywords = sqlitemethode.GetKeywordsList();
 
-
-
+                
                 if (ApplicationData.Current.LocalSettings.Values.ContainsKey("pubDate"))
                 {
                     oldPubDate = (string)ApplicationData.Current.LocalSettings.Values["pubDate"];
@@ -99,11 +98,11 @@ namespace App_project
                 return false;
             }
             return DateTime.Compare(newDate, oldDate) >= 0;  // DEMO SITUATIE, >= om te testen, moet in werkelijkheid > zijn
-        }
+        }                                                       // GEVOLG: elke feed is een nieuwe als DEMO
 
         public async void Timer1_Tick()
         {
-            await loadRSSFeed();
+            await LoadRSSFeed();
         }
 
         public void UpdateTile(string tile) 

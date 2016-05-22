@@ -7,17 +7,8 @@ using System.Threading.Tasks;
 
 namespace App_project
 {
-    public class RSSItem : INotifyPropertyChanged
+    public class RSSItem
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        //private void NotifyPropertyChanged(string propertyName)
-        //{
-        //    if (PropertyChanged != null)
-        //    {
-        //        PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        //    }
-        //}
         private string uniqueId;
 
         public string UniqueId
@@ -28,7 +19,6 @@ namespace App_project
                 if (value != uniqueId)
                 {
                     uniqueId = value;
-                    //NotifyPropertyChanged("UniqueId");
                 }
             }
         }
@@ -43,7 +33,6 @@ namespace App_project
                 if (value != title)
                 {
                     title = value;
-                    //NotifyPropertyChanged("Title");
                 }
             }
         }
@@ -57,7 +46,6 @@ namespace App_project
                 if (value != link)
                 {
                     link = value;
-                    //NotifyPropertyChanged("Link");
                 }
             }
         }
@@ -71,7 +59,6 @@ namespace App_project
                 if (value != description)
                 {
                     description = value;
-                    //NotifyPropertyChanged("Description");
                 }
             }
         }
@@ -88,7 +75,6 @@ namespace App_project
                 if (value != pubDate)
                 {
                     pubDate = value;
-                    //NotifyPropertyChanged("PubDate");
                 }
             }
         }

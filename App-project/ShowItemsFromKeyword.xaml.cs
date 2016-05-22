@@ -46,8 +46,6 @@ namespace App_project
             keyword = "nokeywordavailable";
             keyword = (string)ApplicationData.Current.LocalSettings.Values["keyword"];
 
-            //Debug.WriteLine("*** *** *** keyword: {0}  SELECTED",keyword);
-            
             listItems = sqlitemethode.GetItemsList(keyword);
             listbox2.ItemsSource = listItems;
         }

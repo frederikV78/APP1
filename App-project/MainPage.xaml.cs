@@ -61,24 +61,10 @@ namespace App_project
         /// This parameter is typically used to configure the page.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            //DeleteTable("items");
-            
-
-            //TODO: Prepare page for display here.
-
-            // TODO: Prepare page for display here.
-
             sqlitemethode.CreateTablesIfNotExists();
             LabelAmountOfItems.Text = sqlitemethode.CountTableItems();
             LabelAmountOfKeywords.Text = sqlitemethode.CountTableKeywords();
            
-
-
-            // TODO: If your application contains multiple pages, ensure that you are
-            // handling the hardware Back button by registering for the
-            // Windows.Phone.UI.Input.HardwareButtons.BackPressed event.
-            // If you are using the NavigationHelper provided by some templates,
-            // this event is handled for you.
         }
 
         private void btnOnToonKernwoorden_Click(object sender, RoutedEventArgs e)
@@ -95,7 +81,7 @@ namespace App_project
             {
                sqlitemethode.AddKeyword(keyword);
             }
-            await feedmethode.loadRSSFeed();
+            await feedmethode.LoadRSSFeed();
             LabelAmountOfItems.Text = sqlitemethode.CountTableItems();
             LabelAmountOfKeywords.Text = sqlitemethode.CountTableKeywords();
             keyword = "";
@@ -122,7 +108,7 @@ namespace App_project
 
         private async void btnOnUpdateRssfeed_Click(object sender, RoutedEventArgs e)
         {
-            await feedmethode.loadRSSFeed();
+            await feedmethode.LoadRSSFeed();
             LabelAmountOfItems.Text = sqlitemethode.CountTableItems();
             keywordTextBox.Text = "";
         }

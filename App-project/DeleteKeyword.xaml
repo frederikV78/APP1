@@ -37,21 +37,6 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-
-
-        <!--<ListView x:Name="KeywordsList" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="10,0,0,0" SelectionMode="Single">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel>
-                        <Grid>
-                            <CheckBox x:Name="keywordCheckBox" Checked="keywordCheckBox_Checked" Unchecked="keywordCheckBox_Unchecked" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" />
-                            <TextBlock x:Name="KeywordLabel" Text="{Binding Path=Item}" FontSize="32" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="50,10,0,0" />
-                        </Grid>
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>-->
-
     </Grid>
 
 

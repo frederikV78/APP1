@@ -38,7 +38,6 @@ namespace App_project
         /// This parameter is typically used to configure the page.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            //Load the list of keywords from the Keywords table 
             listbox1.ItemsSource = sqlitemethode.GetKeywordsList();
         }
 
@@ -58,58 +57,6 @@ namespace App_project
                 this.Frame.Navigate(typeof(DeleteKeyword));
             }
         }
-
-
-
-
-
-
-
-
-
-        // // // // // //
-        //// METHODS ////
-        // // // // // //
-        //public List<string> GetKeywordsList()
-        //{
-        //    try
-        //    {
-        //        string query = "SELECT * FROM Keywords ORDER BY Name;";
-        //        using (SQLiteConnection conn = new SQLiteConnection("Keywords.db"))
-        //        {
-        //            using (SQLitePCL.ISQLiteStatement statement = conn.Prepare(query))
-        //            {
-        //                List<string> LijstKeywords = new List<string>();
-
-        //                int i = 0;
-        //                Debug.WriteLine("   *** START db items ***   ");
-        //                while (statement.Step() == SQLiteResult.ROW)
-        //                {
-        //                    i++;
-        //                    string keyword = (string)statement[1];
-        //                    LijstKeywords.Add(keyword);
-        //                }
-        //                if (i == 0)
-        //                {
-        //                    LijstKeywords.Add("Nothing to show!");
-        //                }
-        //                else
-        //                {
-        //                    Debug.WriteLine("AMOUNT OF ITEMS in Keywords:{0}", i);
-        //                }
-        //                return LijstKeywords;
-        //            };
-        //        };
-        //    }
-        //    catch (SQLiteException ex)
-        //    {
-        //        Debug.WriteLine(" ***   Exeption: {0}", ex.Message);
-        //        throw;
-        //    }
-
-        //}
-
- 
 
 
 

@@ -22,30 +22,6 @@
         </CommandBar>
     </Page.BottomAppBar>
 
-    <!--<Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
-        <ListView x:Name="listView1" ItemsSource="{Binding Items}">
-
-            -->
-    <!--IsItemClickEnabled="True"
-                      ItemClick="ItemView_ItemClick">-->
-    <!--
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Margin="0,0,0,9.5">
-                        <TextBlock Text="{Binding PubDate}"
-                                       TextWrapping="Wrap"
-                                       Style="{StaticResource ListViewItemSubheaderTextBlockStyle}"
-                                       Margin="0,0,19,0"/>
-                        <TextBlock Text="{Binding Title}"
-                                       TextWrapping="Wrap"
-                                       Style="{StaticResource ListViewItemTextBlockStyle}"
-                                       Margin="0,0,19,0"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </Grid>-->
-
     <Grid>
         <ListBox x:Name="listbox2" Margin="25,25,25,25" Background="Black">
             <ListBox.ItemContainerStyle>
@@ -67,7 +43,5 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-
-
     </Grid>
 </Page>
