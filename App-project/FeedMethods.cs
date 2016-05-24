@@ -72,7 +72,10 @@ namespace App_project
                             }
                         }
                     }
-                    SendToast(hits);  // DEMO SITUATIE, in realiteit: if(hits>0){SendToast(hits)}
+                    if (hits>0)
+                    {
+                        SendToast(hits);
+                    }
                     string amountOfItems = sqlitemethode.CountTableItems();
                     string notification = "Total Items : " + amountOfItems + "| New Items: " + hits + " (" + DateTime.Now.Hour.ToString() + ":" + DateTime.Now.Minute.ToString() + "." + DateTime.Now.Second.ToString() + ")";
                     UpdateTile(notification);

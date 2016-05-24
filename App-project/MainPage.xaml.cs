@@ -41,7 +41,7 @@ namespace App_project
 
             dispatcherTimer1 = new DispatcherTimer();
             dispatcherTimer1.Tick += DispatcherTimer1_Tick;
-            dispatcherTimer1.Interval = new TimeSpan(0, 0, 30); // als demo staat dit op 30 seconden
+            dispatcherTimer1.Interval = new TimeSpan(0, 0, 10); // als demo staat dit op 10 seconden
             //10min = 64-80kb per feed (piekwaarde met marge) * 30 dagen * 24 uur * 6 updates/uur = ~270-340 MB/maand
             dispatcherTimer1.Start();
 
